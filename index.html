@@ -448,10 +448,10 @@
 
         /* ==================== HERO SECTION ==================== */
         .hero {
-            padding: 6.5rem 4rem 5rem;
+            padding: 4rem 4rem 3.5rem;
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
-            gap: 4.5rem;
+            gap: 3.5rem;
             align-items: center;
             max-width: 1280px;
             margin: 0 auto;
@@ -591,7 +591,7 @@
 
         /* ==================== SECTIONS ==================== */
         .section {
-            padding: 6rem 4rem;
+            padding: 4rem 4rem;
             max-width: 1280px;
             margin: 0 auto;
             border-top: 1px solid var(--line);
@@ -601,7 +601,7 @@
             display: grid;
             grid-template-columns: 110px 1fr;
             gap: 2.5rem;
-            margin-bottom: 3.5rem;
+            margin-bottom: 2.25rem;
         }
 
         .section-head .tag {
@@ -627,99 +627,7 @@
         }
 
         /* ==================== PROBLEM & SOLUTION ==================== */
-        .problem-solution {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            background: transparent;
-            border: none;
-            margin-bottom: 3.5rem;
-        }
-
-        .ps-card {
-            background: var(--paper-raised);
-            padding: 2.75rem;
-            border: 1.5px solid var(--line);
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .ps-card .ps-label {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 1.25rem;
-            font-weight: 600;
-        }
-
-        .ps-card.problem .ps-label { color: var(--beet); }
-        .ps-card.solution .ps-label { color: var(--moss); }
-
-        .ps-card h3 {
-            font-size: 22px;
-            margin-bottom: 1rem;
-            letter-spacing: -0.015em;
-        }
-
-        .ps-card p {
-            color: var(--ink-soft);
-            font-size: 16px;
-            line-height: 1.85;
-        }
-
         /* ==================== STATS (nutrition-facts strip) ==================== */
-        .facts-panel {
-            border: 1.5px solid var(--line);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            background: var(--paper-raised);
-        }
-
-        .facts-header {
-            padding: 1.5rem 2rem;
-            border-bottom: 2px solid var(--line);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--ink-faint);
-            font-weight: 600;
-            background: var(--paper-tin);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        .stat-card {
-            text-align: left;
-            padding: 2rem 1.75rem;
-            border-left: 1px solid var(--line);
-        }
-
-        .stat-card:first-child { border-left: none; }
-
-        .stat-number {
-            font-family: var(--font-mono);
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--moss);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--ink-soft);
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
         .product-cat {
             font-family: var(--font-mono);
             font-size: 10px;
@@ -784,6 +692,30 @@
         .nutri-row strong { color: var(--ink); font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
         .nutri-row.lead { background: var(--paper-tin); }
         .nutri-row.lead strong, .nutri-row.lead span { color: var(--ink); font-weight: 700; }
+
+        .pay-optional {
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .pay-optional-head {
+            font-size: 12.5px;
+            color: var(--ink-faint);
+            margin-bottom: 0.9rem;
+        }
+
+        .pay-optional-head span {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--moss);
+            border: 1px solid color-mix(in srgb, var(--moss) 30%, transparent);
+            border-radius: 3px;
+            padding: 2px 6px;
+            margin-right: 0.4rem;
+        }
 
         .upi-vpa-line {
             font-size: 12.5px;
@@ -1344,7 +1276,12 @@
         .product-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            /* Packaging shots, so the whole pack has to stay in frame. `cover`
+               was cropping the net weight off the premix pouch and the edges off
+               the bar. `contain` on a fixed-ratio box also means photos of
+               different shapes all present at the same size. */
+            object-fit: contain;
+            padding: 0.75rem;
             position: relative;
             z-index: 1;
         }
@@ -1391,13 +1328,6 @@
             color: var(--ink);
             margin-bottom: 0.5rem;
             letter-spacing: -0.01em;
-        }
-
-        .product-description {
-            font-size: 14px;
-            color: var(--ink-soft);
-            margin-bottom: 1rem;
-            line-height: 1.65;
         }
 
         .product-features {
@@ -1481,140 +1411,8 @@
         }
 
         /* ==================== VALUES ==================== */
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .value-card {
-            display: flex;
-            gap: 1.25rem;
-            background: var(--paper-raised);
-            padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid var(--line);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .value-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .value-card .icon {
-            width: 28px;
-            height: 28px;
-            color: var(--moss);
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .value-card h3 {
-            font-size: 17px;
-            color: var(--ink);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-
-        .value-card p {
-            color: var(--ink-soft);
-            font-size: 15px;
-            line-height: 1.75;
-        }
-
         /* ==================== VISION SECTION ==================== */
-        .vision {
-            background: linear-gradient(135deg, var(--brand-moss-fixed) 0%, rgba(45, 80, 22, 0.95) 100%);
-            color: var(--surface-dark-text);
-            padding: 5rem;
-            border-radius: 12px;
-            margin-top: 5rem;
-            position: relative;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .vision .quote-mark {
-            font-family: var(--font-display);
-            font-size: 72px;
-            line-height: 1;
-            color: var(--brand-turmeric-fixed);
-            margin-bottom: 0.75rem;
-            display: block;
-            opacity: 0.9;
-        }
-
-        .vision h3 {
-            font-size: 32px;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            color: var(--surface-dark-text);
-            max-width: 50ch;
-            line-height: 1.15;
-            letter-spacing: -0.015em;
-        }
-
-        .vision p {
-            font-size: 17px;
-            line-height: 1.85;
-            max-width: 65ch;
-            color: rgba(244, 246, 239, 0.85);
-        }
-
         /* ==================== NEWSLETTER ==================== */
-        .newsletter {
-            background: var(--paper-raised);
-            border: 1.5px solid var(--line);
-            padding: 3.5rem 4rem;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2.5rem;
-            flex-wrap: wrap;
-            box-shadow: var(--shadow-md);
-        }
-
-        .newsletter-copy h3 {
-            font-size: 26px;
-            color: var(--ink);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            letter-spacing: -0.015em;
-        }
-
-        .newsletter-copy p {
-            color: var(--ink-soft);
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .newsletter-form input {
-            min-width: 240px;
-            padding: 0.85rem 1.1rem;
-            border: 1.5px solid var(--line);
-            border-radius: 6px;
-            font-size: 14px;
-            background: var(--paper-raised);
-            color: var(--ink);
-            font-family: var(--font-body);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .newsletter-form input:focus {
-            outline: none;
-            border-color: var(--moss);
-            box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.08);
-        }
-
         /* ==================== FOOTER ==================== */
         footer {
             background: var(--surface-dark);
@@ -2001,6 +1799,25 @@
 
         .contact-email:hover { color: var(--moss-deep); }
 
+        .about-body {
+            max-width: 720px;
+        }
+
+        .about-body p {
+            color: var(--ink-soft);
+            font-size: 16.5px;
+            line-height: 1.7;
+        }
+
+        .about-body p + p { margin-top: 1rem; }
+
+        .contact-faq-head {
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+            font-size: 18px;
+            font-family: var(--font-display);
+        }
+
         .contact-grid {
             display: grid;
             grid-template-columns: 0.85fr 1.15fr;
@@ -2244,7 +2061,6 @@
             .hero { grid-template-columns: 1fr; }
             .hero-art { max-width: 420px; margin: 0 auto; }
             .featured-products { grid-template-columns: repeat(2, 1fr); }
-            .values-grid { grid-template-columns: repeat(2, 1fr); }
             .footer-content { grid-template-columns: repeat(2, 1fr); }
         }
 
@@ -2296,21 +2112,23 @@
             nav a::after { display: none; }
 
             .header-right { gap: 0.5rem; }
-            .header-right .btn { padding: 0.65rem 1rem; font-size: 13px; }
+            /* Phone header is brand + cart + menu only. "Shop Now" duplicates
+               both the menu's Shop link and the hero CTA, and it was the thing
+               making the bar feel crowded. */
+            .header-cta { display: none; }
 
-            .hero { padding: 2.5rem 1.5rem; }
+            .hero { padding: 2rem 1.5rem 1.5rem; gap: 2rem; }
             .hero h1 { font-size: 2rem; }
             .hero p { font-size: 16px; }
             .cta-buttons { flex-direction: column; align-items: stretch; }
 
-            .section { padding: 3rem 1.5rem; }
+            .section { padding: 2.5rem 1.5rem; }
             .section-head { grid-template-columns: 1fr; gap: 0.5rem; }
 
             /* two-up keeps the shop feeling like a shop on a phone */
             .featured-products { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
             .product-info { padding: 1rem; }
             .product-name { font-size: 15px; }
-            .product-description { display: none; }
             .product-features {
                 margin-bottom: 0.9rem;
                 gap: 0.3rem;
@@ -2341,8 +2159,6 @@
             }
 
             .filter-bar::-webkit-scrollbar { display: none; }
-
-            .problem-solution { grid-template-columns: 1fr; }
             .trust-bar { grid-template-columns: repeat(2, 1fr); }
             .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
             .contact-panel { padding: 1.75rem; }
@@ -2351,88 +2167,10 @@
             .pd-head { gap: 1rem; }
             .pd-thumb { width: 64px; height: 64px; }
             .to-top { bottom: 1rem; right: 1rem; width: 40px; height: 40px; }
-            .stat-card { border-left: none; border-top: 1px solid var(--line); }
-            .stat-card:first-child { border-top: none; }
-
             .cart-sidebar { width: 100%; }
             .modal { padding: 1rem 0.75rem 2rem; }
             .modal-content { padding: 1.75rem 1.5rem; border-radius: 14px; }
-            .newsletter { flex-direction: column; align-items: stretch; text-align: left; }
             .field-row, .field-row.three { grid-template-columns: 1fr; }
-        }
-
-        .search-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(20, 23, 15, 0.55);
-            z-index: 180;
-            padding: 2rem;
-        }
-
-        .search-modal.open {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 5rem;
-        }
-
-        .search-modal-content {
-            background: var(--paper);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 600px;
-            padding: 2rem;
-            border: 1.5px solid var(--line);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .search-modal-content input {
-            width: 100%;
-            padding: 1rem 1.25rem;
-            border: 1.5px solid var(--line);
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 1.5rem;
-            background: var(--paper-raised);
-            color: var(--ink);
-            font-family: inherit;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .search-modal-content input:focus {
-            outline: none;
-            border-color: var(--moss);
-            box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.08);
-        }
-
-        .search-results {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .search-result-item {
-            padding: 0.85rem 0.25rem;
-            border-bottom: 1px solid var(--line);
-            cursor: pointer;
-            transition: color 0.2s;
-            font-size: 14px;
-            color: var(--ink-soft);
-        }
-
-        .search-result-item strong { color: var(--ink); }
-
-        .search-result-item:hover {
-            color: var(--moss);
-        }
-
-        .search-empty {
-            padding: 1rem 0.25rem;
-            color: var(--ink-faint);
-            font-size: 13.5px;
         }
 
         .success-message {
@@ -2488,7 +2226,7 @@
         /* ==================== PRINT ==================== */
         @media print {
             header, footer, .cart-sidebar, .cart-scrim, .to-top, .recovery,
-            .trust-bar-wrap, .newsletter, .search-modal, .success-message,
+            .trust-bar-wrap, .success-message,
             .filter-bar, .skip-link, .close, .btn {
                 display: none !important;
             }
@@ -2535,7 +2273,7 @@
     <!-- Recovers an order the customer placed but never sent through -->
     <div class="recovery" id="recoveryBanner" role="status">
         <span id="recoveryText"></span>
-        <button onclick="resendLastOrder()">Send it now</button>
+        <button onclick="resendLastOrder()">Finish it</button>
         <button onclick="dismissRecovery()" style="background:none;color:inherit;text-decoration:underline;padding:0;">Dismiss</button>
     </div>
 
@@ -2549,35 +2287,27 @@
                 </div>
             </button>
             <nav id="mainNav">
-                <a href="#why" onclick="closeMenu()">Why GetsU</a>
                 <a href="#products" onclick="closeMenu()">Shop</a>
-                <a href="#values" onclick="closeMenu()">Values</a>
+                <a href="#why" onclick="closeMenu()">Why GetsU</a>
+                <a href="#about" onclick="closeMenu()">About</a>
                 <a href="#contact" onclick="closeMenu()">Contact</a>
             </nav>
         </div>
+        <!-- Deliberately only three controls: brand, cart, menu. Search was
+             removed rather than restyled — over a three-product catalogue it
+             earns no space, and on a phone it was crowding the two controls
+             people actually use. -->
         <div class="header-right">
-            <button class="icon-btn" onclick="openSearch()" aria-label="Search">
-                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </button>
             <button class="icon-btn" onclick="toggleCart()" aria-label="Cart" style="position: relative;">
                 <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
                 <span class="cart-count" id="cartCount" style="display: none;">0</span>
             </button>
-            <button class="btn btn-primary" onclick="openShop()">Shop Now</button>
+            <button class="btn btn-primary header-cta" onclick="openShop()">Shop Now</button>
             <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
                 <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
             </button>
         </div>
     </header>
-
-    <!-- SEARCH MODAL -->
-    <div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="Search products">
-        <div class="search-modal-content">
-            <input type="search" placeholder="Search products…" id="searchInput"
-                   autocomplete="off" aria-label="Search products" oninput="searchProducts()">
-            <div class="search-results" id="searchResults"></div>
-        </div>
-    </div>
 
     <!-- HERO SECTION -->
     <section class="hero">
@@ -2587,10 +2317,9 @@
                 <span class="eyebrow">Clean-label nutrition</span>
             </div>
             <h1>Healthy eating should be <span class="highlight">delicious</span>, not a compromise.</h1>
-            <p>Clean ingredients. Great taste. Fair prices. We're closing the gap between junk food and boring health food — one label you can actually read.</p>
+            <p>Clean ingredients, real taste, fair prices — on a label you can actually read.</p>
             <div class="cta-buttons">
-                <button class="btn btn-primary" onclick="scrollToSection('products')">Start Shopping</button>
-                <button class="btn btn-secondary" onclick="scrollToSection('why')">Learn Our Story</button>
+                <button class="btn btn-primary" onclick="scrollToSection('products')">Explore Products</button>
             </div>
             <!-- Each of these is checkable against the pack or a stated policy.
                  Comparative claims ("25% more protein") need a published basis
@@ -2612,61 +2341,6 @@
             <span class="badge-accent">20g protein</span>
         </button>
     </section>
-
-    <!-- PROBLEM & SOLUTION -->
-    <section id="why" class="section">
-        <div class="section-head">
-            <span class="tag">§ 01</span>
-            <div>
-                <h2>The problem we're solving</h2>
-                <p class="section-subtitle">Today, people face a difficult choice: tasty food that's unhealthy, or healthy food that's boring, expensive, and hard to prepare.</p>
-            </div>
-        </div>
-
-        <div class="problem-solution">
-            <div class="ps-card problem">
-                <div class="ps-label">
-                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" style="width:16px;height:16px;"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
-                    The status quo
-                </div>
-                <h3>Pick your compromise</h3>
-                <p>Most people choose between junk food that tastes good but wears down long-term health, or expensive, difficult-to-prepare health foods that feel like medicine.</p>
-            </div>
-            <div class="ps-card solution">
-                <div class="ps-label">
-                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" style="width:16px;height:16px;"><path d="M20 6 9 17l-5-5"/></svg>
-                    Our solution
-                </div>
-                <h3>No compromise needed</h3>
-                <p>GetsU makes clean-label, nutrient-dense food that's delicious, convenient, and affordable — so the healthy choice becomes the easy one.</p>
-            </div>
-        </div>
-
-        <div class="facts-panel">
-            <div class="facts-header">Our products, by the numbers</div>
-            <!-- Every figure here traces to a specific product's declared panel,
-                 so it can be checked against the pack. -->
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number num">20g</div>
-                    <div class="stat-label">Protein in one bar</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number num">0g</div>
-                    <div class="stat-label">Added sugar in the bar</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number num">129</div>
-                    <div class="stat-label">Calories per pancake serving</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number num">₹99</div>
-                    <div class="stat-label">Starting price</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- TRUST BAR -->
     <div class="trust-bar-wrap"><div class="trust-bar">
         <div class="trust-item">
@@ -2690,9 +2364,9 @@
     <!-- FEATURED PRODUCTS -->
     <section id="products" class="section">
         <div class="section-head">
-            <span class="tag">§ 02</span>
+            <span class="tag">§ 01</span>
             <div>
-                <h2>Shop the range</h2>
+                <h2>Bestselling products</h2>
                 <p class="section-subtitle">Three products, each one we'd eat every day. Tap any of them for the full ingredient list, allergens and nutrition before you buy.</p>
             </div>
         </div>
@@ -2700,18 +2374,13 @@
         <div class="featured-products" id="featuredProducts"></div>
     </section>
 
-    <!-- STANDARDS -->
-    <!--
-      NOTE FOR GETSU: when you have real customer quotes, this is where they go.
-      Use the .quotes / .quote-card markup kept in the template comment at the
-      bottom of this file. Only publish words a real customer actually wrote.
-    -->
-    <section class="section">
+    <!-- WHY GETSU -->
+    <section id="why" class="section">
         <div class="section-head">
-            <span class="tag">§ 03</span>
+            <span class="tag">§ 02</span>
             <div>
-                <h2>What we will and won't do</h2>
-                <p class="section-subtitle">We're new, so we haven't earned your trust yet. Here's what we're committing to in writing instead.</p>
+                <h2>Why GetsU?</h2>
+                <p class="section-subtitle">Most food asks you to choose: tastes good, or does you good. We're a new brand, so rather than ask for your trust, here is exactly what we commit to.</p>
             </div>
         </div>
 
@@ -2719,12 +2388,12 @@
             <div class="quote-card">
                 <div class="pledge-mark" aria-hidden="true">01</div>
                 <h3>Every ingredient, on the page</h3>
-                <p>Full ingredient lists and allergen declarations are on this site before you buy, not hidden until the box arrives. Tap any product to read them.</p>
+                <p>Full ingredient lists and allergen declarations are here before you buy, not hidden until the box arrives. Tap any product to read them.</p>
             </div>
             <div class="quote-card">
                 <div class="pledge-mark" aria-hidden="true">02</div>
-                <h3>No invented reviews</h3>
-                <p>You won't find testimonials on this site until real customers write them. When they do, they'll appear here with their words unedited.</p>
+                <h3>No invented claims</h3>
+                <p>No testimonials until real customers write them, and no nutrition figure we can't back up against the printed pack.</p>
             </div>
             <div class="quote-card">
                 <div class="pledge-mark" aria-hidden="true">03</div>
@@ -2734,124 +2403,25 @@
         </div>
     </section>
 
-    <!-- VALUES SECTION -->
-    <section id="values" class="section">
+    <!-- ABOUT -->
+    <section id="about" class="section">
         <div class="section-head">
-            <span class="tag">§ 04</span>
+            <span class="tag">§ 03</span>
             <div>
-                <h2>Our brand values</h2>
-                <p class="section-subtitle">Everything we do is guided by these six principles.</p>
+                <h2>About GetsU</h2>
             </div>
         </div>
 
-        <div class="values-grid">
-            <div class="value-card">
-                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/></svg>
-                <div>
-                    <h3>Trust</h3>
-                    <p>Every ingredient on our label is real, honest, and backed by our commitment to you.</p>
-                </div>
-            </div>
-            <div class="value-card">
-                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                <div>
-                    <h3>Transparency</h3>
-                    <p>No misleading claims. Clear ingredients, clear nutrition. You deserve to know exactly what you're eating.</p>
-                </div>
-            </div>
-            <div class="value-card">
-                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M5 12H3m18 0h-2M6.3 6.3 4.9 4.9m14.2 1.4-1.4-1.4M6.3 17.7l-1.4 1.4m14.2-1.4 1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
-                <div>
-                    <h3>Simplicity</h3>
-                    <p>Healthy eating should never feel complicated. We make it easy, enjoyable, and accessible.</p>
-                </div>
-            </div>
-            <div class="value-card">
-                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
-                <div>
-                    <h3>Innovation</h3>
-                    <p>We continuously develop products people actually enjoy eating, not products they feel obligated to eat.</p>
-                </div>
-            </div>
-            <div class="value-card">
-                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3h6v5l4 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l4-9z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
-                <div>
-                    <h3>Science</h3>
-                    <p>Evidence-based nutrition, not trends. Every product is built on solid nutritional science.</p>
-                </div>
-            </div>
-            <div class="value-card">
-                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C1 8.5 2.5 5 6 5c2 0 3.5 1 4.5 2.5C11.5 6 13 5 15 5c3.5 0 5 3.5 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
-                <div>
-                    <h3>Prevention</h3>
-                    <p>We believe in preventing disease through everyday nutrition, not just treating it after the fact.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="vision">
-            <span class="quote-mark">"</span>
-            <h3>To make healthy eating simple, enjoyable, affordable, and accessible for everyone, every single day.</h3>
-            <p>We're building a future where healthy food becomes the first choice, not the difficult choice.</p>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="section">
-        <div class="section-head">
-            <span class="tag">§ 05</span>
-            <div>
-                <h2>Questions, answered</h2>
-                <p class="section-subtitle">The things people ask before their first order.</p>
-            </div>
-        </div>
-
-        <div class="faq-list">
-            <details class="faq-item">
-                <summary>How do I pay?</summary>
-                <p>You pay right after checkout, for the exact amount of your order. We show you a UPI QR code with the amount already filled in — scan it with GPay, PhonePe, Paytm or any UPI app, then tap "I've paid" so we can match it to your order. Card, netbanking and wallet payments run through Razorpay's secure checkout, and your card details are entered on Razorpay's own form, never on this site. Prefer not to pay online? Send us the order instead and we'll sort out payment with you by email.</p>
-            </details>
-            <details class="faq-item">
-                <summary>What does "clean label" actually mean?</summary>
-                <p>Every ingredient on the pack is a real food you can recognise. No artificial preservatives, no hidden fillers, no proprietary blends that hide how little of something is in there. Tap any product to see its full ingredient list before you buy.</p>
-            </details>
-            <details class="faq-item">
-                <summary>How long does delivery take?</summary>
-                <p>We dispatch within 1–2 business days and delivery usually takes 3–6 business days anywhere in India. Shipping is free with no minimum order. You'll get tracking details on the phone number and email you give at checkout.</p>
-            </details>
-            <details class="faq-item">
-                <summary>I have a food allergy — is this safe for me?</summary>
-                <p>Every product page lists its allergens in full. Our High-Protein Oats contain milk and almonds, and the Protein Bar contains tree nuts and peanuts. The Pancake Premix has no declared allergens, but everything is packed in a facility that also handles milk and nuts, so we can't guarantee against trace cross-contact. Always check the physical pack before eating.</p>
-            </details>
-            <details class="faq-item">
-                <summary>What if my order arrives damaged?</summary>
-                <p>Send us a photo within 48 hours of delivery and we'll replace it or refund you in full, at no cost to you. Because these are food products we can't accept returns on opened packs otherwise.</p>
-            </details>
-            <details class="faq-item">
-                <summary>Can I change or cancel after ordering?</summary>
-                <p>Yes — email us your order ID as soon as you can. We can change or cancel anything right up until it ships.</p>
-            </details>
-        </div>
-    </section>
-
-    <!-- NEWSLETTER -->
-    <section class="section" style="border-top: none; padding-top: 0;">
-        <div class="newsletter">
-            <div class="newsletter-copy">
-                <h3>Get 10% off your first order</h3>
-                <p>Send us your email and we'll reply with a code, plus a note when new products land.</p>
-            </div>
-            <div class="newsletter-form">
-                <input type="email" inputmode="email" autocapitalize="off" placeholder="Enter your email" id="newsletterEmail">
-                <button class="btn btn-accent" onclick="subscribeNewsletter()">Subscribe</button>
-            </div>
+        <div class="about-body">
+            <p>GetsU makes clean-label, high-protein food for people who don't want to pick between eating well and eating something they actually enjoy. Everything is made in India, labelled in plain language, and priced to be an everyday purchase rather than a treat.</p>
+            <p>We're starting small and deliberately: a short range we've got right, rather than a long one we haven't. New products go on sale here when their photography and verified nutrition are ready — not before.</p>
         </div>
     </section>
 
     <!-- CONTACT SECTION -->
     <section id="contact" class="section">
         <div class="section-head">
-            <span class="tag">§ 06</span>
+            <span class="tag">§ 04</span>
             <div>
                 <h2>Get in touch</h2>
                 <p class="section-subtitle">Questions about ingredients, an order, or stocking GetsU — we read every message and reply within one business day.</p>
@@ -2888,6 +2458,34 @@
                 </div>
             </div>
         </div>
+
+        <h3 class="contact-faq-head">Common questions</h3>
+        <div class="faq-list">
+            <details class="faq-item">
+                <summary>How do I pay?</summary>
+                <p>Fill in your delivery details and your order opens as a ready-written message — on WhatsApp if you have it, otherwise in your email app. Press send and it reaches us. We reply within a day to confirm stock and delivery, and payment is settled then. If you'd rather pay straight away, the confirmation screen shows a UPI QR with the exact amount — that step is optional.</p>
+            </details>
+            <details class="faq-item">
+                <summary>What does "clean label" actually mean?</summary>
+                <p>Every ingredient on the pack is a real food you can recognise. No artificial preservatives, no hidden fillers, no proprietary blends that hide how little of something is in there. Tap any product to see its full ingredient list before you buy.</p>
+            </details>
+            <details class="faq-item">
+                <summary>How long does delivery take?</summary>
+                <p>We dispatch within 1–2 business days and delivery usually takes 3–6 business days anywhere in India. Shipping is free with no minimum order. You'll get tracking details on the phone number and email you give at checkout.</p>
+            </details>
+            <details class="faq-item">
+                <summary>I have a food allergy — is this safe for me?</summary>
+                <p>Every product page lists its allergens in full. Our High-Protein Oats contain milk and almonds, and the Protein Bar contains tree nuts and peanuts. The Pancake Premix has no declared allergens, but everything is packed in a facility that also handles milk and nuts, so we can't guarantee against trace cross-contact. Always check the physical pack before eating.</p>
+            </details>
+            <details class="faq-item">
+                <summary>What if my order arrives damaged?</summary>
+                <p>Send us a photo within 48 hours of delivery and we'll replace it or refund you in full, at no cost to you. Because these are food products we can't accept returns on opened packs otherwise.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Can I change or cancel after ordering?</summary>
+                <p>Yes — email us your order ID as soon as you can. We can change or cancel anything right up until it ships.</p>
+            </details>
+        </div>
     </section>
 
     <!-- FOOTER -->
@@ -2901,8 +2499,8 @@
             <div class="footer-section">
                 <h3>About</h3>
                 <ul>
-                    <li><a href="#why">Our Story</a></li>
-                    <li><a href="#values">Our Values</a></li>
+                    <li><a href="#why">Why GetsU</a></li>
+                    <li><a href="#about">About Us</a></li>
                     <li><a href="#products">Products</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -2911,7 +2509,6 @@
                 <h3>Shop</h3>
                 <ul>
                     <li><a href="#products" onclick="scrollToSection('products')">Featured</a></li>
-                    <li><a href="#" onclick="openSearch(); return false;">Search products</a></li>
                     <li><a href="#" onclick="openCart(); return false;">View cart</a></li>
                     <li><a href="#" onclick="openOrders(); return false;">Your orders</a></li>
                 </ul>
@@ -2921,7 +2518,7 @@
                 <ul>
                     <li><a href="#" onclick="openPolicy('shipping'); return false;">Shipping Info</a></li>
                     <li><a href="#" onclick="openPolicy('returns'); return false;">Returns</a></li>
-                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">FAQ</a></li>
                     <li><a href="#" onclick="openContact(); return false;">Contact Us</a></li>
                 </ul>
             </div>
@@ -2937,7 +2534,7 @@
          catalog there's nothing showing what you've added or how to pay for it.
          This keeps the running total and the way out in reach the whole time. -->
     <div class="cart-bar" id="cartBar" role="region" aria-label="Cart summary">
-        <button class="cart-bar-info" onclick="openCart()">
+        <button class="cart-bar-info" onclick="openCart()" aria-label="Open cart">
             <span class="cart-bar-count" id="cartBarCount"></span>
             <span class="cart-bar-total" id="cartBarTotal"></span>
         </button>
@@ -3041,8 +2638,8 @@
                         <input type="text" id="ckNotes" placeholder="Best time to deliver, gate code, anything else">
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Place Order</button>
-                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">You'll be able to pay on the next screen.</p>
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Review &amp; Send Order</button>
+                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Your order opens as a ready-written message for you to send.</p>
                 </form>
             </div>
         </div>
@@ -3056,33 +2653,41 @@
             <h2 id="confirmHeading">One last step<span id="confirmName"></span></h2>
             <p id="confirmIntro">Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.</p>
             <div class="confirm-id" id="confirmOrderId"></div>
-            <div class="upi-pay-box" id="razorpayPayBox" style="display:none;">
-                <div class="eyebrow" style="margin-bottom:0.6rem;">Amount to pay</div>
-                <div class="upi-pay-amount" id="razorpayPayAmount"></div>
-                <button type="button" class="btn btn-primary btn-block" id="razorpayPayBtn"
-                        style="margin-top:0.85rem;" onclick="startRazorpayPayment()">Pay securely</button>
-                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.6rem;">Cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.</p>
-            </div>
-            <div class="upi-pay-box" id="upiPayBox" style="display:none;">
-                <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now via UPI</div>
-                <img id="upiQrImage" alt="UPI QR code — scan to pay" width="200" height="200"
-                     onerror="qrUnavailable()">
-                <div class="upi-pay-amount" id="upiPayAmount"></div>
-                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
-                <a id="upiPayLink" class="btn btn-secondary btn-block" href="#" style="margin-top:0.7rem;">Open my UPI app</a>
-                <!-- The QR is drawn by a third-party service. If it ever fails to
-                     load, the UPI ID below is enough to complete the payment by
-                     hand, so a sale is never blocked by someone else's outage. -->
-                <p class="upi-vpa-line">or pay this UPI ID: <button type="button" id="upiVpaCopy"
-                        onclick="copyUpiId()" title="Copy UPI ID"><span id="upiVpaText"></span></button></p>
-                <button type="button" class="btn btn-primary btn-block" id="upiPaidBtn"
-                        style="margin-top:0.5rem;" onclick="confirmUpiPaid()">I've paid</button>
-            </div>
-            <button type="button" id="confirmAltToggle" onclick="revealConfirmFallback()"
-                    style="display:none;background:none;border:0;padding:0;margin:0.9rem auto 0;font:inherit;font-size:12.5px;color:var(--ink-faint);text-decoration:underline;cursor:pointer;">
-                Prefer to send us the order instead?
-            </button>
+
+            <!-- Sending is the order. It sits first and is the only primary
+                 button on this screen; paying is offered underneath as optional,
+                 because an unsent order has not reached GetsU no matter what was
+                 paid. -->
             <div class="confirm-actions" id="confirmActions"></div>
+
+            <div class="pay-optional" id="payOptional" style="display:none;">
+                <div class="pay-optional-head"><span>Optional</span> pay now, or settle when we confirm</div>
+
+                <div class="upi-pay-box" id="razorpayPayBox" style="display:none;">
+                    <div class="eyebrow" style="margin-bottom:0.6rem;">Amount to pay</div>
+                    <div class="upi-pay-amount" id="razorpayPayAmount"></div>
+                    <button type="button" class="btn btn-secondary btn-block" id="razorpayPayBtn"
+                            style="margin-top:0.85rem;" onclick="startRazorpayPayment()">Pay securely</button>
+                    <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.6rem;">Cards, UPI, netbanking and wallets, handled by Razorpay.</p>
+                </div>
+
+                <div class="upi-pay-box" id="upiPayBox" style="display:none;">
+                    <img id="upiQrImage" alt="UPI QR code — scan to pay" width="180" height="180"
+                         src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                         onerror="qrUnavailable()">
+                    <div class="upi-pay-amount" id="upiPayAmount"></div>
+                    <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
+                    <a id="upiPayLink" class="btn btn-secondary btn-block" href="#" style="margin-top:0.7rem;">Open my UPI app</a>
+                    <!-- The QR is drawn by a third-party service. If it ever fails to
+                         load, the UPI ID below is enough to complete the payment by
+                         hand, so a sale is never blocked by someone else's outage. -->
+                    <p class="upi-vpa-line">or pay this UPI ID: <button type="button" id="upiVpaCopy" aria-label="Copy UPI ID"
+                            onclick="copyUpiId()" title="Copy UPI ID"><span id="upiVpaText"></span></button></p>
+                    <button type="button" class="btn btn-secondary btn-block" id="upiPaidBtn"
+                            style="margin-top:0.5rem;" onclick="confirmUpiPaid()">I've paid</button>
+                </div>
+            </div>
+
             <p class="confirm-foot" id="confirmFoot">We reply within a day to confirm stock, delivery date and payment.</p>
         </div>
     </div>
@@ -3209,6 +2814,7 @@
                 features: ['20g protein per bar', 'Plant powered', 'No added sugar', 'Gluten free'],
                 badge: '',
                 desc: 'Dates, almonds, cashews and peanut butter with pea protein and cocoa. Plant-powered, nothing artificial.',
+                pack: '50 g bar',          // "NET WT. 50g" on the pack photo
                 serving: '50 g bar',
                 nutrition: { kcal: 212, protein: 20, carbs: 18, fat: 9, fibre: 4, sugar: 8 },
                 ingredients: 'Dates, almonds, cashews, peanut butter, pea protein isolate, cocoa powder, natural flavour, pink salt.',
@@ -3229,6 +2835,7 @@
                 features: ['20g protein / 100g', '100% plant based', 'No refined sugar'],
                 badge: '',
                 desc: 'Ragi, oats and sattu with pea protein and monk fruit. Just add milk and cook.',
+                pack: '100 g pouch',       // "NET WT. 100g" on the pack photo
                 serving: '35 g (3 scoops)',
                 nutrition: { kcal: 129, protein: 7, carbs: 19, fat: 2, fibre: 2, sugar: 2 },
                 ingredients: 'Ragi flour, oats flour, sattu (roasted gram flour), pea protein, monk fruit, baking powder, flaxseed powder, chia seeds, pink salt.',
@@ -3245,6 +2852,7 @@
                 features: ['High in protein', 'Ready in 3 minutes'],
                 badge: '',
                 desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.',
+                pack: '',                  // confirm the printed net weight before listing
                 serving: '45 g',
                 // Nutrition intentionally omitted. The previous figures declared
                 // 70 g of macronutrients inside a 45 g serving, which cannot be
@@ -3378,11 +2986,9 @@
 
             const note = document.getElementById('checkoutPaymentNote');
             if (note) {
-                if (ready) {
-                    note.textContent = 'Pay securely online — cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.';
-                } else if (UPI_VPA) {
-                    note.textContent = 'Pay by UPI on the next screen — a QR code with the exact amount is generated for your order.';
-                }
+                note.textContent = WHATSAPP_NUMBER
+                    ? 'Next step: your order opens in WhatsApp, ready to send. Payment is arranged after we confirm.'
+                    : 'Next step: your order opens in your email app, ready to send. Payment is arranged after we confirm.';
             }
 
             const trust = document.getElementById('trustPaymentNote');
@@ -3390,7 +2996,7 @@
                 if (ready) {
                     trust.textContent = 'UPI, cards and wallets — handled by Razorpay';
                 } else if (UPI_VPA) {
-                    trust.textContent = 'Pay by UPI — scan and pay the exact amount';
+                    trust.textContent = 'Pay by UPI, or settle once we confirm';
                 } else {
                     trust.textContent = "We'll confirm your order and arrange payment";
                 }
@@ -3524,9 +3130,7 @@
                 : "We've noted your payment against this order. We'll verify it against our UPI account and confirm by email, usually within a few hours.";
             document.getElementById('razorpayPayBox').style.display = 'none';
             document.getElementById('upiPayBox').style.display = 'none';
-            document.getElementById('confirmActions').innerHTML = '';
-            document.getElementById('confirmActions').style.display = 'none';
-            document.getElementById('confirmAltToggle').style.display = 'none';
+
             document.getElementById('confirmFoot').textContent = verified
                 ? 'Order ' + orderId + ' · Paid online'
                 : 'Order ' + orderId + ' · Payment reported, awaiting confirmation';
@@ -3560,11 +3164,11 @@
 
         // Manual send options stay hidden while online payment is the happy path;
         // they only appear if the customer abandons or fails the payment.
+        // Send options are always on screen now, so there is nothing to reveal.
+        // Kept as a no-op hook for the payment-failure paths that call it.
         function revealConfirmFallback() {
             const actions = document.getElementById('confirmActions');
             if (actions) actions.style.display = '';
-            const toggle = document.getElementById('confirmAltToggle');
-            if (toggle) toggle.style.display = 'none';
         }
 
         // INITIALIZE
@@ -3592,6 +3196,9 @@
                 return;
             }
 
+            // Card carries only what someone needs to choose: photo, name,
+            // category + pack size, verified highlights, price and Add. The prose
+            // description moved to the product page — on a card it was noise.
             container.innerHTML = list.map(product => `
                 <div class="product-card">
                     <button class="product-open" onclick="openProduct(${product.id})"
@@ -3602,9 +3209,8 @@
                         ${productThumb(product, 'card')}
                     </div>
                     <div class="product-info">
-                        <div class="product-cat">${categoryLabel(product.category)}</div>
+                        <div class="product-cat">${categoryLabel(product.category)}${product.pack ? ' · ' + product.pack : ''}</div>
                         <div class="product-name">${product.name}</div>
-                        <div class="product-description">${product.desc}</div>
                         <div class="product-features">
                             ${product.features.map(f => `<span>${f}</span>`).join('')}
                         </div>
@@ -3763,8 +3369,7 @@
         // Any open panel locks the page behind it, so a swipe scrolls the panel, not the site.
         function syncScrollLock() {
             const open = document.querySelector('.modal.open')
-                || document.getElementById('cartSidebar').classList.contains('open')
-                || document.getElementById('searchModal').classList.contains('open');
+                || document.getElementById('cartSidebar').classList.contains('open');
             document.body.classList.toggle('overlay-open', !!open);
         }
 
@@ -3957,9 +3562,9 @@
                 sent: false,
             };
 
-            // The order is only a checkout, not a sale — `purchase` is reported from
-            // markOrderPaid() once money actually arrives, so Analytics revenue
-            // reflects payments rather than abandoned carts.
+            // The form is filled, not sent. The order only reaches GetsU when the
+            // customer actually sends the message on the next screen, so nothing
+            // here may describe it as placed.
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'begin_checkout', {
                     value: order.total,
@@ -3973,35 +3578,26 @@
                 });
             }
 
-            // Firebase is the only place GetsU sees an order, so it has to carry
-            // everything needed to actually pack and ship it — full address included.
+            // Deliberately anonymous. The customer's name, phone, address and
+            // email travel only inside the WhatsApp or email message they send
+            // themselves — they are never written to this database, whose config
+            // sits in public client-side code. What's kept here is what GetsU
+            // needs to see demand: what was ordered, and for how much.
             if (database) {
-                const ref = database.ref('orders').push({
+                database.ref('orders').push({
                     order_id: order.id,
                     date: order.date,
-                    customer_name: order.customer.name,
-                    customer_email: order.customer.email,
-                    customer_phone: order.customer.phone,
-                    customer_address: order.customer.address,
-                    customer_city: order.customer.city,
-                    customer_state: order.customer.state,
-                    customer_pincode: order.customer.pincode,
-                    customer_landmark: order.customer.landmark || '',
-                    delivery_notes: order.customer.notes || '',
                     items_count: order.items.length,
                     subtotal: order.subtotal,
                     tax: order.tax,
                     total: order.total,
                     status: order.status,
-                    products: order.items
+                    products: order.items,
                 });
-                // Remember the row so the payment can be written back onto it later.
-                if (ref && ref.key) order.firebaseKey = ref.key;
             }
 
-            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
-            orders.push(order);
-            localStorage.setItem('getsuOrders', JSON.stringify(orders));
+            saveOrderLocally(order);
+
 
             cart = [];
             saveCart();
@@ -4011,12 +3607,53 @@
             showOrderConfirmation(order);
         }
 
+        // ==================== LOCAL ORDER HISTORY (NO PII) ====================
+        // "Your orders" is a convenience for the customer on this device, so it
+        // keeps what they'd want to look up — order number, what was in it, what
+        // it cost — and nothing that identifies them. Name, phone, email and
+        // address are never written to localStorage: that store is readable by
+        // any script on the origin, survives on shared devices, and the brief
+        // rules it out. The full details live only in memory for this session,
+        // long enough to build the message the customer sends.
+        function strippedOrder(order) {
+            return {
+                id: order.id,
+                date: order.date,
+                items: order.items,
+                subtotal: order.subtotal,
+                tax: order.tax,
+                total: order.total,
+                status: order.status,
+                sent: order.sent,
+            };
+        }
+
+        function saveOrderLocally(order) {
+            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
+            orders.push(strippedOrder(order));
+            localStorage.setItem('getsuOrders', JSON.stringify(orders));
+            sessionOrders[order.id] = order; // full copy, memory only, this tab only
+        }
+
+        // Full orders for this page session. Cleared by a refresh or a new tab by
+        // design — that is the point of not persisting them.
+        const sessionOrders = {};
+
+        function fullOrder(id) {
+            return sessionOrders[id] || null;
+        }
+
         // Builds the plain-text order summary used by every send channel.
         function orderText(order) {
             const itemLines = order.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
-            return `GetsU Order ${order.id}\n\n${itemLines}\n\nSubtotal: ₹${order.subtotal}\nTax: ₹${order.tax}\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}\n${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}\nEmail: ${order.customer.email}`
-                + (order.customer.landmark ? `\nLandmark: ${order.customer.landmark}` : '')
-                + (order.customer.notes ? `\n\nNotes: ${order.customer.notes}` : '');
+            const head = `GetsU Order ${order.id}\n\n${itemLines}\n\nSubtotal: ₹${order.subtotal}\nTax: ₹${order.tax}\nTotal: ₹${order.total}`;
+            const c = order.customer;
+            // An order read back from localStorage has no customer details by
+            // design, so the summary is just the basket.
+            if (!c) return head;
+            return head + `\n\nDeliver to:\n${c.name}\n${c.address}\n${c.city}, ${c.state} ${c.pincode}\nPhone: ${c.phone}\nEmail: ${c.email}`
+                + (c.landmark ? `\nLandmark: ${c.landmark}` : '')
+                + (c.notes ? `\n\nNotes: ${c.notes}` : '');
         }
 
         function markOrderSent(id) {
@@ -4027,49 +3664,71 @@
             hideRecovery();
         }
 
+        // Builds the WhatsApp deep link carrying the whole order. This is the
+        // order channel: the customer sends it from their own account, which is
+        // also why none of these details need to be stored anywhere by us.
+        function whatsappHref(order) {
+            if (!WHATSAPP_NUMBER) return '';
+            return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText(order))}`;
+        }
+
         function showOrderConfirmation(order) {
             window.pendingPaymentOrder = order;
-            const payOnline = razorpayReady();
-            const payUpi = !payOnline && Boolean(UPI_VPA);
+            const full = order.customer ? order : fullOrder(order.id);
+            const known = Boolean(full && full.customer);
+            const o = known ? full : order;
 
-            document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
+            const waHref = known ? whatsappHref(o) : '';
+            const text = orderText(o);
+            const mailHref = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent('GetsU Order ' + o.id)}&body=${encodeURIComponent(text)}`;
+
+            document.getElementById('confirmOrderId').textContent = 'Order ' + o.id;
             // Rewriting the heading recreates the name span, so fill it in afterwards.
-            document.getElementById('confirmHeading').innerHTML = (payOnline || payUpi)
-                ? 'Almost done<span id="confirmName"></span>'
-                : 'One last step<span id="confirmName"></span>';
-            document.getElementById('confirmName').textContent = order.customer.name ? ', ' + order.customer.name.split(' ')[0] : '';
-            document.getElementById('confirmIntro').textContent = payOnline
-                ? 'Pay below to confirm your order. Nothing else to do — the moment payment goes through, your order is placed.'
-                : payUpi
-                    ? "Scan the QR below with any UPI app to pay, then tap “I've paid” so we can match the payment to your order."
-                    : "Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.";
-            document.getElementById('confirmFoot').textContent = payOnline
-                ? "You'll get a payment receipt by email, and we'll confirm delivery details within a day."
-                : 'We reply within a day to confirm stock, delivery date and payment.';
+            document.getElementById('confirmHeading').innerHTML = 'One last step<span id="confirmName"></span>';
+            document.getElementById('confirmName').textContent =
+                known && o.customer.name ? ', ' + o.customer.name.split(' ')[0] : '';
 
-            const text = orderText(order);
-            const mailHref = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent('GetsU Order ' + order.id)}&body=${encodeURIComponent(text)}`;
-            const waHref = WHATSAPP_NUMBER
-                ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
-                : '';
+            document.getElementById('confirmIntro').textContent = known
+                ? (waHref
+                    ? "Your order isn't with us yet. Tap below and WhatsApp opens with your order already written out — just press send."
+                    : "Your order isn't with us yet. Tap below and your email opens with the order already written out — just press send.")
+                : "We don't keep your delivery details on this device, so this order can't be re-sent. Add the items to your cart again and check out to place it.";
+            document.getElementById('confirmFoot').textContent = known
+                ? 'We reply within a day to confirm stock, delivery date and payment.'
+                : 'Order numbers and totals are kept here; personal details never are.';
 
+            const actions = document.getElementById('confirmActions');
+            actions.innerHTML = known ? `
+                ${waHref ? `<a class="btn btn-whatsapp btn-block" href="${waHref}" target="_blank" rel="noopener"
+                     onclick="markOrderSent('${o.id}')">Send order on WhatsApp</a>` : ''}
+                <a class="btn ${waHref ? 'btn-secondary' : 'btn-primary'} btn-block" href="${mailHref}"
+                   onclick="markOrderSent('${o.id}')">Send order by email</a>
+                <button class="btn btn-secondary btn-block" onclick="copyOrder('${o.id}')">Copy order details</button>
+            ` : `
+                <button class="btn btn-primary btn-block" onclick="closeConfirmation(); scrollToSection('products');">Back to the shop</button>
+            `;
+            actions.style.display = '';
+
+            // Payment is secondary and only offered on a live order.
+            const payOnline = known && razorpayReady();
+            const payUpi = known && !payOnline && Boolean(UPI_VPA);
             const razorpayBox = document.getElementById('razorpayPayBox');
             const upiBox = document.getElementById('upiPayBox');
-            const payBtn = document.getElementById('razorpayPayBtn');
+            document.getElementById('payOptional').style.display = (payOnline || payUpi) ? '' : 'none';
+
             if (payOnline) {
-                document.getElementById('razorpayPayAmount').textContent = '₹' + order.total;
+                const payBtn = document.getElementById('razorpayPayBtn');
+                document.getElementById('razorpayPayAmount').textContent = '₹' + o.total;
                 payBtn.disabled = false;
-                payBtn.textContent = 'Pay ₹' + order.total + ' securely';
+                payBtn.textContent = 'Pay ₹' + o.total + ' securely';
                 razorpayBox.style.display = '';
                 upiBox.style.display = 'none';
             } else if (payUpi) {
-                const upiUri = `upi://pay?pa=${encodeURIComponent(UPI_VPA)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${order.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + order.id)}`;
-                document.getElementById('upiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}`;
-                document.getElementById('upiPayAmount').textContent = '₹' + order.total;
-                // On a phone the QR is unscannable (it's on the same screen), so give
-                // them a link that hands the amount straight to their UPI app.
+                const upiUri = `upi://pay?pa=${encodeURIComponent(UPI_VPA)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${o.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + o.id)}`;
+                document.getElementById('upiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUri)}`;
                 document.getElementById('upiPayLink').href = upiUri;
-                document.getElementById('upiPaidBtn').textContent = "I've paid ₹" + order.total;
+                document.getElementById('upiPayAmount').textContent = '₹' + o.total;
+                document.getElementById('upiPaidBtn').textContent = "I've paid ₹" + o.total;
                 document.getElementById('upiVpaText').textContent = UPI_VPA;
                 document.getElementById('upiQrImage').classList.remove('qr-failed');
                 razorpayBox.style.display = 'none';
@@ -4078,22 +3737,6 @@
                 razorpayBox.style.display = 'none';
                 upiBox.style.display = 'none';
             }
-
-            const actions = document.getElementById('confirmActions');
-            actions.innerHTML = `
-                ${waHref ? `<a class="btn btn-whatsapp btn-block" href="${waHref}" target="_blank" rel="noopener"
-                     onclick="markOrderSent('${order.id}')">Send on WhatsApp</a>` : ''}
-                <a class="btn ${waHref ? 'btn-secondary' : 'btn-primary'} btn-block" href="${mailHref}"
-                   onclick="markOrderSent('${order.id}')">Send by email</a>
-                <button class="btn btn-secondary btn-block" onclick="copyOrder('${order.id}')">Copy order details</button>
-            `;
-            // Whenever we can take the money on this screen, paying IS placing the
-            // order. Stacking "send us your order" buttons underneath only makes
-            // people think payment wasn't enough, so they stay tucked away behind a
-            // link and come back automatically if payment fails or is abandoned.
-            const canPay = payOnline || payUpi;
-            actions.style.display = canPay ? 'none' : '';
-            document.getElementById('confirmAltToggle').style.display = canPay ? '' : 'none';
 
             openModal('confirmationModal');
         }
@@ -4152,9 +3795,36 @@
             hideRecovery();
         }
 
+        // Picks up an unsent order. If its details are still in memory (same tab,
+        // no refresh) we can go straight back to the send screen. Otherwise the
+        // details are deliberately gone, so the useful recovery is to put the
+        // same items back in the basket rather than show a dead end.
         function resendLastOrder() {
             const order = pendingOrder();
-            if (order) showOrderConfirmation(order);
+            if (!order) return;
+            if (fullOrder(order.id)) {
+                showOrderConfirmation(fullOrder(order.id));
+            } else {
+                restoreOrderToCart(order);
+            }
+        }
+
+        function restoreOrderToCart(order) {
+            hideRecovery();
+            cart = [];
+            order.items.forEach(line => {
+                const product = products.find(p => p.name === line.name);
+                if (product) cart.push({ ...product, qty: Math.min(MAX_QTY, line.qty) });
+            });
+            saveCart();
+            updateCartUI();
+            if (cart.length === 0) {
+                showNotification('Those products are no longer available.');
+                scrollToSection('products');
+                return;
+            }
+            openCheckout();
+            showNotification('Order ' + order.id + ' is back in your cart.');
         }
 
         function closeConfirmation() {
@@ -4234,7 +3904,7 @@
                     <h3>What does "clean label" mean?</h3>
                     <p>Every ingredient on our packaging is something you can recognize and pronounce — no artificial preservatives, no hidden fillers, no misleading health claims.</p>
                     <h3>How do I pay?</h3>
-                    <p>Pay online as soon as you place your order — the checkout shows you the exact amount and takes UPI, cards, netbanking or wallets. If you'd rather not pay online, send us the order from the confirmation screen and we'll arrange payment with you by email.</p>
+                    <p>Send us your order from the confirmation screen and we'll reply within a day to confirm stock and delivery, then settle payment. Paying immediately by UPI is offered on that screen too, but it's optional.</p>
                     <h3>Where do you ship?</h3>
                     <p>Currently across India. Reach out if you need delivery outside India and we'll see what we can do.</p>
                     <h3>Can I change or cancel an order?</h3>
@@ -4247,11 +3917,13 @@
                     <h3>What we collect</h3>
                     <p>When you place an order or contact us, we collect your name, phone number, email, and delivery address. We use this only to process your order and communicate with you about it.</p>
                     <h3>Where it goes</h3>
-                    <p>Your order — including your delivery address — is sent to our order database, hosted on Google Firebase, so we can pack and ship it. A copy is also kept in your own browser so you can see your order history on this device.</p>
-                    <p>If you pay online, the payment itself is handled by Razorpay. Your card or UPI details are entered on Razorpay's own secure form and are never seen or stored by this website.</p>
-                    <p>We also use Google Analytics to understand how the site is used. We do not sell your data, and we don't share it with anyone for marketing.</p>
+                    <p>Your name, phone number, email and delivery address reach us only inside the WhatsApp or email message you send yourself from the confirmation screen. This website does not transmit them anywhere on its own, and does not save them on your device.</p>
+                    <p>Your browser keeps a short history of your own orders — order number, items and totals — so you can look them up later. It holds no personal or address details.</p>
+                    <p>We keep an anonymous record of what was ordered and for how much, so we know what to make more of. It carries no customer identity.</p>
+                    <p>If you choose to pay online, the payment is handled by Razorpay or your own UPI app. Card and UPI credentials are entered there, never on this site.</p>
+                    <p>We use Google Analytics to understand how the site is used. We do not sell your data or share it for marketing.</p>
                     <h3>Your choices</h3>
-                    <p>Want your details removed from our records? Email us and we'll delete them. Clearing your browser data removes the copy stored on your device.</p>
+                    <p>Because your details live in the message you sent us, deleting that conversation on your side and asking us to delete it on ours removes them. Email us and we'll confirm. Clearing your browser data removes the order history on your device.</p>
                     <h3>Contact</h3>
                     <p>Questions about your data? Email <a href="mailto:teamgetsu.31@gmail.com">teamgetsu.31@gmail.com</a>.</p>
                 `
@@ -4260,7 +3932,7 @@
                 title: 'Terms of Service',
                 body: `
                     <h3>Orders</h3>
-                    <p>Placing an order through this site is a request to purchase. Once payment is received your order is confirmed, subject to stock — if an item turns out to be unavailable we'll tell you and refund that item in full. Orders left unpaid are confirmed only once we've reached you to arrange payment. Prices are listed in Indian Rupees (₹) and include applicable tax; they may change without notice.</p>
+                    <p>Filling in the checkout form does not place an order. Your order reaches us only when you send the WhatsApp or email message generated on the confirmation screen. It is a request to purchase, which we confirm by reply, subject to stock — if an item turns out to be unavailable we'll tell you before taking payment. Prices are listed in Indian Rupees (₹) and include applicable tax; they may change without notice.</p>
                     <h3>Product information</h3>
                     <p>We describe our products as accurately as we can. Always check the ingredient list on the physical packaging if you have allergies or dietary restrictions.</p>
                     <h3>Limitation</h3>
@@ -4298,7 +3970,8 @@
             const order = (JSON.parse(localStorage.getItem('getsuOrders')) || []).find(o => o.id === id);
             if (!order) return;
             closeOrders();
-            showOrderConfirmation(order);
+            if (fullOrder(id)) showOrderConfirmation(fullOrder(id));
+            else restoreOrderToCart(order);
         }
 
         function openOrders() {
@@ -4427,86 +4100,6 @@
             closeModal('productModal');
         }
 
-        function openSearch() {
-            document.getElementById('searchModal').classList.add('open');
-            syncScrollLock();
-            document.getElementById('searchInput').focus();
-        }
-
-        let searchLogTimer;
-
-        function logSearch(query, count) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'search', { search_term: query, results_count: count });
-            }
-            if (database) {
-                database.ref('searches').push({
-                    query: query,
-                    results_count: count,
-                    timestamp: new Date().toISOString(),
-                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
-                });
-            }
-        }
-
-        function searchProducts() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            // search name, description, category label, features and ingredients
-            const results = products.filter(p => [
-                p.name, p.desc, p.category, categoryLabel(p.category),
-                p.features.join(' '), p.ingredients
-            ].join(' ').toLowerCase().includes(query));
-            const resultsDiv = document.getElementById('searchResults');
-
-            if (query.length === 0) {
-                clearTimeout(searchLogTimer); // don't log a query they just cleared
-                resultsDiv.innerHTML = '';
-                return;
-            }
-
-            // Results redraw on every keystroke, but the search is only *logged*
-            // once typing settles — otherwise "protein" files seven searches.
-            clearTimeout(searchLogTimer);
-            searchLogTimer = setTimeout(() => logSearch(query, results.length), 600);
-
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '<div class="search-empty">No products match your search.</div>';
-                return;
-            }
-
-            resultsDiv.innerHTML = results.map(p => `
-                <div class="search-result-item" onclick="closeSearch(); openProduct(${p.id});">
-                    <strong>${p.name}</strong> — ₹${p.price}
-                    <span style="opacity:.7"> · ${categoryLabel(p.category)}</span>
-                </div>
-            `).join('');
-        }
-
-        function closeSearch() {
-            document.getElementById('searchModal').classList.remove('open');
-            syncScrollLock();
-        }
-
-        document.getElementById('searchModal').addEventListener('click', function(e) {
-            if (e.target === this) closeSearch();
-        });
-
-        function subscribeNewsletter() {
-            const input = document.getElementById('newsletterEmail');
-            const email = input.value.trim();
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showNotification('Enter a valid email address to subscribe.');
-                input.focus();
-                return;
-            }
-            // No backend here, so the signup has to actually leave the device to be real.
-            window.location.href = `mailto:${BUSINESS_EMAIL}`
-                + `?subject=${encodeURIComponent('Newsletter signup')}`
-                + `&body=${encodeURIComponent('Please add me to the GetsU list and send my 10% code.\n\nEmail: ' + email)}`;
-            showNotification('Opening your email app — hit send and your code is on the way.');
-            input.value = '';
-        }
-
         function scrollToSection(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
@@ -4515,18 +4108,21 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // One toast at a time. Each is fixed to the same corner, so adding two in
+        // quick succession (two taps of Add) printed them on top of each other.
+        let toastTimer;
         function showNotification(message) {
+            document.querySelectorAll('.success-message').forEach(n => n.remove());
+            clearTimeout(toastTimer);
             const notification = document.createElement('div');
             notification.className = 'success-message';
+            notification.setAttribute('role', 'status');
             notification.textContent = message;
             document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
+            toastTimer = setTimeout(() => notification.remove(), 3000);
         }
 
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-modal') && !e.target.closest('[aria-label="Search"]')) {
-                closeSearch();
-            }
             if (!e.target.closest('#mainNav') && !e.target.closest('#menuToggle')) {
                 closeMenu();
             }
@@ -4586,7 +4182,6 @@
                 closeMenu();
                 // route through closeModal so focus returns to whatever opened it
                 document.querySelectorAll('.modal.open').forEach(m => closeModal(m.id));
-                closeSearch();
             }
         });
     </script>
