@@ -3,53 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#232B1F">
 <title>Page not found — GetsU</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232D5016'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23F7F5F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23232B1F'/%3E%3Ctext x='16' y='24' font-family='Arial Black,Arial,sans-serif' font-style='italic' font-size='21' font-weight='900' fill='%23CC5500' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
 <style>
-:root{
-  --ink:#0D0D0B;--ink-soft:#5A5A54;--ink-faint:#8C8C82;
-  --paper:#FAFAF8;--paper-raised:#FFF;--line:#E8E4DB;
-  --moss:#2D5016;--on-moss:#F7F5F2;--turmeric:#D4A373;
-  --font-display:'Iowan Old Style','Palatino Linotype',Georgia,serif;
-  --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
-  --font-mono:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',monospace;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --ink:#F2F0ED;--ink-soft:#BCBAB4;--ink-faint:#8A8880;
-  --paper:#12140F;--paper-raised:#1D1F1A;--line:#3A3E36;
-  --moss:#8ACC73;--on-moss:#12140F;--turmeric:#E8B968;
-}}
-:root[data-theme="dark"]{
-  --ink:#F2F0ED;--ink-soft:#BCBAB4;--ink-faint:#8A8880;
-  --paper:#12140F;--paper-raised:#1D1F1A;--line:#3A3E36;
-  --moss:#8ACC73;--on-moss:#12140F;--turmeric:#E8B968;
-}
+/* GitHub Pages serves this file for any missing address, at any depth, so the
+   font is addressed from the site root. If the site moves to its own domain
+   (e.g. getsu.in), change /GetsU-/ below to just / . */
+@font-face{font-family:'Fira Sans';font-style:italic;font-weight:900;font-display:swap;
+  src:url('/GetsU-/fonts/fira-sans-900-italic.woff2') format('woff2')}
+:root{--sage:#9CAF88;--grey:#A7A7A7;--amber:#CC5500;--amber-press:#A64400;--ink:#1C2418;--ink-soft:#2C3826;--panel:#232B1F;--light:#F0F2EA}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--font-body);
-  min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:2rem;line-height:1.65}
-.wrap{max-width:520px;text-align:center}
-.code{font-family:var(--font-mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--turmeric);margin-bottom:1.25rem}
-h1{font-family:var(--font-display);font-size:clamp(1.9rem,5vw,2.6rem);letter-spacing:-.02em;margin-bottom:1rem;text-wrap:balance}
-p{color:var(--ink-soft);font-size:17px;margin-bottom:2rem;text-wrap:balance}
+body{background:var(--sage);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:2rem;line-height:1.6}
+.wrap{max-width:540px;text-align:center;background:var(--panel);border:2px solid rgba(167,167,167,.55);border-radius:18px;padding:2.5rem 2rem 2.4rem;box-shadow:0 10px 30px rgba(28,36,24,.22)}
+.logo{font-family:'Fira Sans','Arial Black',Arial,sans-serif;font-weight:900;font-style:italic;font-size:2rem;color:var(--grey);letter-spacing:-.02em;margin-bottom:2rem}
+.logo b{color:var(--amber)}
+.code{display:inline-block;border:2px solid var(--grey);color:var(--grey);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.4rem .9rem;border-radius:8px;margin-bottom:1.3rem}
+h1{font-family:'Fira Sans','Arial Black',Arial,sans-serif;font-weight:900;font-style:italic;letter-spacing:-.02em;line-height:1.05;
+  font-size:clamp(2.2rem,7vw,3.2rem);margin-bottom:1rem;color:var(--grey)}
+p{color:var(--grey);font-size:1.1rem;margin-bottom:2rem}
 .actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:.875rem 1.75rem;
-  border-radius:5px;font-weight:600;font-size:14px;text-decoration:none;border:1.5px solid transparent;
-  transition:background .25s ease,border-color .25s ease,color .25s ease}
-.btn-primary{background:var(--moss);color:var(--on-moss)}
-.btn-primary:hover{filter:brightness(.92)}
-.btn-secondary{background:var(--paper-raised);color:var(--ink);border-color:var(--line)}
-.btn-secondary:hover{border-color:var(--moss);color:var(--moss)}
-:focus-visible{outline:2px solid var(--moss);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:.8rem 1.7rem;border-radius:10px;
+  font-weight:700;font-size:1rem;text-decoration:none;border:2px solid transparent;transition:background .2s,color .2s}
+.btn-primary{background:var(--amber);color:#fff}
+.btn-primary:hover{background:var(--amber-press)}
+.btn-ghost{color:var(--grey);border-color:var(--grey)}
+.btn-ghost:hover{background:var(--grey);color:var(--panel)}
+:focus-visible{outline:3px solid var(--light);outline-offset:3px;box-shadow:0 0 0 6px rgba(28,36,24,.9)}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="logo">Gets<b>U</b></div>
   <div class="code">Error 404</div>
   <h1>This page isn't on the shelf</h1>
   <p>The link may be old, or the page may have moved. The shop is still where you left it.</p>
   <div class="actions">
     <a class="btn btn-primary" href="/GetsU-/#products">Go to the shop</a>
-    <a class="btn btn-secondary" href="/GetsU-/">Back to home</a>
+    <a class="btn btn-ghost" href="/GetsU-/">Back to home</a>
   </div>
 </div>
 </body>
