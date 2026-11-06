@@ -1243,6 +1243,36 @@ function injectStructuredData() {
     });
 }
 
+/* Highlights the nav link for the section being read (home page only). */
+function initScrollSpy() {
+    const links = $$('#mainNav a[href^="#"]');
+    const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+    if (!links.length || !targets.length) return;
+    let ticking = false;
+
+    function update() {
+        ticking = false;
+        let current = '';
+        if (view === 'home') {
+            // the section whose top has passed a line just under the sticky header
+            const line = ($('.site-header').offsetHeight || 76) + window.innerHeight * 0.18;
+            for (const t of targets) if (t.getBoundingClientRect().top <= line) current = t.id;
+            // at the very bottom of the page the last section wins
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = targets[targets.length - 1].id;
+        }
+        links.forEach(a => {
+            const on = a.getAttribute('href') === '#' + current;
+            a.classList.toggle('active', on);
+            if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+        });
+    }
+    const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    window.addEventListener('hashchange', queue);
+    update();
+}
+
 function init() {
     renderProducts();
     $('#fssaiLine').textContent = CONFIG.fssaiLicence ? 'FSSAI Licence No. ' + CONFIG.fssaiLicence : '';
@@ -1256,6 +1286,7 @@ function init() {
     fbPush('page_views', { user_id: userId(), timestamp: new Date().toISOString(), page: location.pathname, referrer: document.referrer || 'direct' });
     renderCartBadge();
     route();
+    initScrollSpy();
 }
 
 init();

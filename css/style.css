@@ -32,7 +32,7 @@
     --panel: #232B1F;          /* dark surface        grey on it 6.1:1 */
     --panel-2: #2D3628;        /* raised on panel */
     --line-dark: rgba(167, 167, 167, 0.38);  /* grey lines on a plate */
-    --plate-border: 2px solid rgba(167, 167, 167, 0.55);
+    --plate-border: 1.5px solid rgba(167, 167, 167, 0.5);
     --light: var(--grey);       /* every text colour on a plate is the concrete grey (6.1:1) */
     --error: #FFB59A;          /* errors on panel */
     --white: #fff;
@@ -595,6 +595,106 @@ ul, ol { list-style: none; }
     .bill-badge { border: 2px solid #000 !important; }
 }
 
+/* ---------- Refinements (from the reference mock-up) ----------
+   Frosted header, foliage-shadow hero stage, glass hero card, brush-stroke highlight,
+   pill buttons with a soft glow, line icons. Palette and font are unchanged. */
+
+/* Pill buttons with a glow. The top of the gradient is exactly #CC5500; the bottom is
+   darker, so the white label never gets lighter than the brand amber. */
+.btn { border-radius: 999px; }
+.btn-primary {
+    background-color: var(--amber);
+    background-image: linear-gradient(180deg, #CC5500 0%, #B04700 100%);
+    box-shadow: 0 8px 20px rgba(204, 85, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.btn-primary:hover:not([disabled]) {
+    background-color: var(--amber-press);
+    background-image: linear-gradient(180deg, #B04700 0%, #964000 100%);
+    box-shadow: 0 10px 24px rgba(204, 85, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.btn-arrow .icon { width: 20px; height: 20px; stroke-width: 2.2; transition: transform 0.2s ease; }
+.btn-arrow:hover .icon { transform: translate(2px, -2px); }
+
+/* Frosted header with an animated underline on the current section */
+.site-header {
+    background-color: rgba(35, 43, 31, 0.94);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid rgba(167, 167, 167, 0.22);
+}
+.main-nav a { position: relative; border-bottom: 0; }
+.main-nav a::after {
+    content: ''; position: absolute; left: 0.9rem; right: 0.9rem; bottom: 0.2rem; height: 3px; border-radius: 2px;
+    background: var(--amber); transform: scaleX(0); transform-origin: left center; transition: transform 0.28s ease;
+}
+.main-nav a:hover::after, .main-nav a.active::after { transform: scaleX(1); }
+.main-nav a.active { color: var(--white); }
+
+/* Hero stage: soft foliage shadows drawn behind the hero (decorative, no product picture) */
+.hero-stage { position: relative; overflow: hidden; isolation: isolate; }
+/* clip only sideways, so the cards' drop shadows are not cut off at the bottom */
+@supports (overflow: clip) { .hero-stage { overflow-x: clip; overflow-y: visible; } }
+.hero-backdrop { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.leaf-shadow {
+    position: absolute; width: min(640px, 70vw); height: auto; opacity: 0.3;
+    filter: blur(5px); mix-blend-mode: multiply; transform-origin: 0 0; overflow: visible;
+    animation: sway 16s ease-in-out infinite alternate;
+}
+.ls-a { top: -70px; left: -90px; }
+.ls-b { top: -30px; right: -120px; transform: scaleX(-1); transform-origin: 50% 0; animation-duration: 21s; animation-direction: alternate-reverse; opacity: 0.24; }
+@keyframes sway { from { rotate: -1.6deg; } to { rotate: 1.8deg; } }
+
+/* Glass hero card */
+.hero-copy {
+    background-color: rgba(35, 43, 31, 0.94);
+    background-image: linear-gradient(155deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 55%);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(28, 36, 24, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.hero-copy, .hero-media { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+.hero-media { animation-delay: 0.12s; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+
+.eyebrow-leaf { width: 18px; height: 18px; color: var(--amber); stroke-width: 2; flex-shrink: 0; }
+
+/* Brush-stroke highlight behind the lead word. If masks are not supported the amber
+   block still shows, so the white word never loses its backdrop. */
+.mark {
+    position: relative; z-index: 0; background: none; padding: 0 0.08em; margin: 0 0.12em 0 0.04em; color: var(--white);
+}
+.mark::before {
+    content: ''; position: absolute; z-index: -1; left: -0.2em; right: -0.1em; top: 0.06em; bottom: -0.04em;
+    background-color: var(--amber);
+    background-image: linear-gradient(180deg, #CC5500 0%, #B04700 100%);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'%3E%3Cpath d='M3 15C8 8 30 9 52 6 80 3 112 7 140 4 164 2 186 6 197 12 199 19 195 25 198 33 200 41 196 47 192 52 168 56 142 52 112 55 82 58 50 54 22 56 10 57 3 52 5 44 7 37 1 30 4 24 6 20 1 19 3 15Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'%3E%3Cpath d='M3 15C8 8 30 9 52 6 80 3 112 7 140 4 164 2 186 6 197 12 199 19 195 25 198 33 200 41 196 47 192 52 168 56 142 52 112 55 82 58 50 54 22 56 10 57 3 52 5 44 7 37 1 30 4 24 6 20 1 19 3 15Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* Proof points: line icon + figure, caption underneath */
+.hero-proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem 1.1rem; }
+.hero-proof li { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 0.6rem; row-gap: 0.45rem; }
+.hero-proof span { grid-column: 1 / -1; line-height: 1.3; }
+.stat-icon {
+    width: 22px; height: 22px; padding: 9px; box-sizing: content-box; color: var(--amber);
+    border: 1.5px solid rgba(167, 167, 167, 0.5); border-radius: 50%; background: var(--panel-2);
+}
+
+/* Hero photo: bigger radius, deeper shadow, gentle lift */
+.hero-media { border-radius: 28px; box-shadow: 0 28px 60px rgba(28, 36, 24, 0.32); }
+.hero-media:hover { transform: translateY(-6px); box-shadow: 0 34px 70px rgba(28, 36, 24, 0.38); }
+.hero-chip { border-radius: 999px; padding: 0.55rem 1rem; }
+.hero-badge { border-radius: 999px; padding: 0.5rem 1.1rem; background-image: linear-gradient(180deg, #CC5500, #B04700); }
+
+/* Why cards: icon in a ring, number to the side */
+.why-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.why-icon {
+    width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--panel-2); color: var(--amber); border: 1.5px solid rgba(167, 167, 167, 0.5);
+}
+.why-icon .icon { width: 26px; height: 26px; stroke-width: 2; }
+.why-top .why-num { margin: 0; font-size: 2.2rem; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
     .product-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
@@ -638,7 +738,8 @@ ul, ol { list-style: none; }
     }
     .main-nav.open { display: flex; }
     .main-nav a { padding: 0.95rem 1.4rem; font-size: 1.05rem; border-bottom: 0; border-left: 4px solid transparent; }
-    .main-nav a:hover { border-left-color: var(--amber); }
+    .main-nav a::after { display: none; }
+    .main-nav a:hover, .main-nav a.active { border-left-color: var(--amber); }
 
     .cart-row { grid-template-columns: 76px 1fr; grid-template-areas: "img info" "qty qty" "total total"; }
     .cart-img { width: 76px; height: 76px; }
@@ -668,6 +769,12 @@ ul, ol { list-style: none; }
 }
 
 @media (max-width: 480px) {
+    .hero-proof { grid-template-columns: 1fr; gap: 0.8rem; }
+    .hero-proof li { grid-template-columns: auto auto 1fr; column-gap: 0.7rem; row-gap: 0; }
+    .hero-proof span { grid-column: auto; }
+    .leaf-shadow { width: 440px; }
+    .ls-a { top: -40px; left: -80px; }
+    .ls-b { top: 160px; right: -150px; }
     .footer-grid { grid-template-columns: 1fr; }
     .pd-head { flex-direction: column; align-items: flex-start; }
     .contact-actions .btn { width: 100%; }

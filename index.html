@@ -120,30 +120,65 @@
         <!-- ============ HOME ============ -->
         <div class="view" id="view-home" data-title="GetsU — Clean-Label Protein Food, Made For You">
 
-            <section class="hero wrap" aria-labelledby="heroTitle">
-                <div class="hero-copy">
-                    <p class="eyebrow"><span class="eyebrow-bar"></span>Clean-label nutrition</p>
-                    <h1 class="display hero-title" id="heroTitle">Healthy eating should be <span class="mark">delicious</span>, not a compromise.</h1>
-                    <p class="hero-lead">Clean ingredients, real taste, fair prices — on a label you can actually read.</p>
-                    <div class="hero-actions">
-                        <a class="btn btn-primary btn-lg" href="#products">Explore Products</a>
-                    </div>
-                    <!-- Each of these is checkable against the pack or a stated policy. -->
-                    <ul class="hero-proof">
-                        <li><strong class="display">20g</strong><span>protein per bar</span></li>
-                        <li><strong class="display">Free</strong><span>delivery across India</span></li>
-                        <li><strong class="display">48h</strong><span>replacement promise</span></li>
-                    </ul>
+            <!-- The stage carries the soft foliage-shadow light behind the hero. It is drawn,
+                 not a photograph, so there is no stand-in product picture anywhere on it. -->
+            <div class="hero-stage">
+                <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+                    <defs><path id="leaf" d="M2 25C30-2 80-4 118 25C80 54 30 52 2 25Z"/></defs>
+                </svg>
+                <div class="hero-backdrop" aria-hidden="true">
+                    <svg class="leaf-shadow ls-a" viewBox="0 0 560 460" focusable="false">
+                        <path d="M-10 40C120 70 240 160 330 330" fill="none" stroke="#1C2418" stroke-width="5"/>
+                        <g fill="#1C2418">
+                            <use href="#leaf" transform="translate(40 52) rotate(20) scale(1.5)"/>
+                            <use href="#leaf" transform="translate(60 18) rotate(-18) scale(1.1)"/>
+                            <use href="#leaf" transform="translate(112 92) rotate(-32) scale(1.4)"/>
+                            <use href="#leaf" transform="translate(152 122) rotate(55) scale(1.6)"/>
+                            <use href="#leaf" transform="translate(212 162) rotate(-40) scale(1.5)"/>
+                            <use href="#leaf" transform="translate(252 208) rotate(60) scale(1.5)"/>
+                            <use href="#leaf" transform="translate(292 258) rotate(-30) scale(1.3)"/>
+                            <use href="#leaf" transform="translate(318 312) rotate(70) scale(1.2)"/>
+                        </g>
+                    </svg>
+                    <svg class="leaf-shadow ls-b" viewBox="0 0 560 460" focusable="false">
+                        <path d="M-10 40C120 70 240 160 330 330" fill="none" stroke="#1C2418" stroke-width="5"/>
+                        <g fill="#1C2418">
+                            <use href="#leaf" transform="translate(40 52) rotate(20) scale(1.5)"/>
+                            <use href="#leaf" transform="translate(112 92) rotate(-32) scale(1.4)"/>
+                            <use href="#leaf" transform="translate(152 122) rotate(55) scale(1.6)"/>
+                            <use href="#leaf" transform="translate(212 162) rotate(-40) scale(1.5)"/>
+                            <use href="#leaf" transform="translate(252 208) rotate(60) scale(1.5)"/>
+                        </g>
+                    </svg>
                 </div>
-                <button type="button" class="hero-media" data-action="open-product" data-id="2"
-                        aria-label="View Protein Bar — Chocolate Delight">
-                    <img src="images/products/protein-bar-chocolate.jpg"
-                         alt="GetsU Chocolate Delight protein bar, 20g protein per bar"
-                         width="776" height="500" fetchpriority="high" decoding="async">
-                    <span class="hero-chip">Protein Bar — Chocolate Delight</span>
-                    <span class="hero-badge">20g protein</span>
-                </button>
-            </section>
+
+                <section class="hero wrap" aria-labelledby="heroTitle">
+                    <div class="hero-copy">
+                        <p class="eyebrow"><span class="eyebrow-bar"></span>Clean-label nutrition
+                            <svg class="icon eyebrow-leaf" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19C5 10 10 5 20 5c0 10-5 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/></svg></p>
+                        <h1 class="display hero-title" id="heroTitle">Healthy eating should be <span class="mark">delicious</span>, not a compromise.</h1>
+                        <p class="hero-lead">Clean ingredients, real taste, fair prices — on a label you can actually read.</p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary btn-lg btn-arrow" href="#products">Explore Products
+                                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+                        </div>
+                        <!-- Each of these is checkable against the pack or a stated policy. -->
+                        <ul class="hero-proof">
+                            <li><svg class="icon stat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg><strong class="display">20g</strong><span>protein per bar</span></li>
+                            <li><svg class="icon stat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><strong class="display">Free</strong><span>delivery across India</span></li>
+                            <li><svg class="icon stat-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5V9.5M10 3h4M18.6 6.4l1.3-1.3"/></svg><strong class="display">48h</strong><span>replacement promise</span></li>
+                        </ul>
+                    </div>
+                    <button type="button" class="hero-media" data-action="open-product" data-id="2"
+                            aria-label="View Protein Bar — Chocolate Delight">
+                        <img src="images/products/protein-bar-chocolate.jpg"
+                             alt="GetsU Chocolate Delight protein bar, 20g protein per bar"
+                             width="776" height="500" fetchpriority="high" decoding="async">
+                        <span class="hero-chip">Protein Bar — Chocolate Delight</span>
+                        <span class="hero-badge">20g protein</span>
+                    </button>
+                </section>
+            </div>
 
             <section class="section" id="products" aria-labelledby="productsTitle">
                 <div class="wrap">
@@ -165,17 +200,17 @@
                     </div>
                     <div class="why-grid">
                         <article class="why-card">
-                            <span class="why-num display" aria-hidden="true">01</span>
+                            <div class="why-top"><span class="why-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg></span><span class="why-num display" aria-hidden="true">01</span></div>
                             <h3>Every ingredient, on the page</h3>
                             <p>Full ingredient lists and allergen declarations are here before you buy, not hidden until the box arrives. Tap any product to read them.</p>
                         </article>
                         <article class="why-card">
-                            <span class="why-num display" aria-hidden="true">02</span>
+                            <div class="why-top"><span class="why-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="why-num display" aria-hidden="true">02</span></div>
                             <h3>No invented claims</h3>
                             <p>No testimonials until real customers write them, and no nutrition figure we can't back up against the printed pack.</p>
                         </article>
                         <article class="why-card">
-                            <span class="why-num display" aria-hidden="true">03</span>
+                            <div class="why-top"><span class="why-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></span><span class="why-num display" aria-hidden="true">03</span></div>
                             <h3>Wrong or damaged, we fix it</h3>
                             <p>Send a photo within 48 hours and we replace it or refund you in full. No arguing, no restocking fee, no return shipping to pay.</p>
                         </article>
