@@ -32,6 +32,12 @@ const CONFIG = {
     // Printed in the footer. Food businesses in India must show this.
     fssaiLicence: '21526031000596',
 
+    // Printed on the bill customers receive after paying online. Leave a
+    // line blank and it is simply left off the bill.
+    legalName: '',          // your registered business name, e.g. 'GetsU Foods Pvt Ltd'
+    businessAddress: '',    // full postal address of the business
+    gstin: '',              // your 15-character GST number, if you are GST-registered
+
     // Tax added on top of the product prices at checkout (0.05 = 5%).
     // GST differs by product, so confirm the right rate with your CA.
     taxRate: 0.05,

@@ -553,6 +553,48 @@ ul, ol { list-style: none; }
 
 .cart-bar { display: none; }
 
+/* ---------- The bill (shown automatically after an online payment) ---------- */
+.bill-layout { grid-template-columns: 1fr; max-width: 860px; }
+/* .panel.bill (not just .bill) so the phone rule that slims every .panel can't re-add padding */
+.panel.bill { padding: 0; overflow: hidden; border-top: 6px solid var(--amber); }
+.bill-inner { padding: 1.9rem 2rem 1.5rem; }
+.bill-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; padding-bottom: 1.4rem; border-bottom: 1px solid var(--line-dark); }
+.bill-head .logo { font-size: 2.2rem; }
+.bill-tag { font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; margin-top: 0.35rem; }
+.bill-meta { text-align: right; }
+.bill-title { font-size: 1.9rem; color: var(--grey); margin-bottom: 0.5rem; }
+.bill-title:focus { outline: none; box-shadow: none; }
+.bill-line { display: flex; justify-content: flex-end; gap: 0.8rem; font-size: 0.92rem; }
+.bill-line strong { color: var(--grey); font-variant-numeric: tabular-nums; }
+.bill-badge { display: inline-block; margin-top: 0.7rem; padding: 0.25rem 0.9rem; border: 2px solid var(--grey); border-radius: 6px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.82rem; }
+.bill-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding: 1.3rem 0; border-bottom: 1px solid var(--line-dark); font-size: 0.93rem; }
+.bill-parties h3 { font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.45rem; }
+.bill-parties strong { color: var(--grey); }
+.bill-table { width: 100%; border-collapse: collapse; margin-top: 1.1rem; }
+.bill-table th { text-align: left; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.5rem 0.4rem; border-bottom: 2px solid var(--line-dark); }
+.bill-table td { padding: 0.8rem 0.4rem; border-bottom: 1px solid var(--line-dark); vertical-align: top; }
+.bill-table td small { display: block; font-size: 0.8rem; }
+.bill-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bill-totals { margin: 1rem 0 0 auto; max-width: 340px; }
+.bill-pay { margin-top: 1.3rem; padding: 0.85rem 1.1rem; background: var(--panel-2); border-left: 4px solid var(--amber); border-radius: 10px; font-size: 0.93rem; }
+.bill-pay strong { color: var(--grey); }
+.bill-note { margin-top: 1rem; font-size: 0.84rem; }
+.bill-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; padding: 0 2rem 1.8rem; }
+
+@media print {
+    @page { margin: 14mm; }
+    html, body { background: #fff !important; color: #000 !important; }
+    .site-header, .site-footer, .steps-wrap, .toast-region, .cart-bar, .recovery, .skip-link, .noscript-note, .modal,
+    .no-print, .page-title, .order-lead { display: none !important; }
+    #view-home, #view-cart, #view-checkout { display: none !important; }
+    .wrap.page { padding: 0 !important; max-width: none !important; }
+    .order-layout { display: block !important; }
+    .bill { border: 1px solid #000 !important; border-top: 6px solid #000 !important; box-shadow: none !important; break-inside: avoid; }
+    .bill, .bill * { color: #000 !important; background: transparent !important; border-color: #000 !important; box-shadow: none !important; }
+    .bill-inner { padding: 0 0.2rem; }
+    .bill-badge { border: 2px solid #000 !important; }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
     .product-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
@@ -577,6 +619,12 @@ ul, ol { list-style: none; }
     .section-head { padding: 1.25rem 1.3rem; }
     .about-body, .contact-list { padding: 1.35rem 1.3rem; }
     .page-title { padding: 0.35rem 1.1rem 0.5rem; }
+    .bill-inner { padding: 1.4rem 1.1rem 1.1rem; }
+    .bill-parties { grid-template-columns: 1fr; gap: 1.1rem; }
+    .bill-meta { text-align: left; }
+    .bill-line { justify-content: flex-start; }
+    .bill-actions { padding: 0 1.1rem 1.4rem; }
+    .bill-actions .btn { width: 100%; }
     .logo { font-size: 1.65rem; }
 
     /* phone header: brand, cart, menu */

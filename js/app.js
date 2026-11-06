@@ -525,12 +525,25 @@ function markPaid(o, paymentId) {
     if (o.paid === 'verified') return;
     o.paid = 'verified';
     o.paymentId = paymentId || null;
+    o.paidAt = new Date().toISOString();
     o.payState = 'idle';
     ga('purchase', { transaction_id: o.id, value: o.total, currency: 'INR', tax: o.tax, shipping: 0, items: o.items.map(i => ({ item_id: i.id, item_name: i.name, price: i.price, quantity: i.qty })) });
     fbPush('payments', { order_id: o.id, method: 'razorpay', verified: true, razorpay_payment_id: paymentId || null, amount: o.total, timestamp: new Date().toISOString() });
     syncOrder(o, { payment_method: 'razorpay', razorpay_payment_id: paymentId || null, paid_at: new Date().toISOString() });
     finishCheckout();
-    toast('Payment received — your order is confirmed.');
+    toast('Payment received — your bill is ready below.');
+    showBill();
+}
+
+// The bill appears the moment payment succeeds: bring it into view and put
+// keyboard / screen-reader focus on it.
+function showBill() {
+    requestAnimationFrame(() => {
+        const t = $('#billTitle');
+        if (!t) return;
+        $('#bill').scrollIntoView({ behavior: 'auto', block: 'start' });
+        t.focus({ preventScroll: true });
+    });
 }
 
 function markUpiClaimed(o) {
@@ -679,7 +692,7 @@ function updatePlaceButton() {
 /* ---------- ORDER PAGE ---------- */
 function orderCopy(o, st) {
     if (st === 'cancelled') return ['Order cancelled', 'No payment was taken. Your cart is still here if you want to change it and try again.'];
-    if (st === 'paid') return ['Payment received — thank you', `Your order ${o.id} is confirmed. Razorpay will send you a receipt, and we'll message you the delivery details.`];
+    if (st === 'paid') return ['Payment received — thank you', `Your order ${o.id} is confirmed and your bill is below. Print or save it now, and we'll message you the delivery details.`];
     if (st === 'payment_reported') {
         return ['Thanks — we\'re verifying your payment', o.sent
             ? 'We\'ll match your UPI payment to this order and confirm by message, usually within a few hours.'
@@ -695,8 +708,7 @@ function orderCopy(o, st) {
 
 function razorpayPanelHTML(o) {
     if (o.paid === 'verified') {
-        return `<section class="panel"><div class="notice ok"><strong>Payment received</strong>${money(o.total)} paid${o.paymentId ? ' · reference ' + esc(o.paymentId) : ''}.</div>
-            <a class="btn btn-primary btn-block" href="#products">Continue shopping</a></section>`;
+        return `<section class="panel no-print"><div class="notice ok" style="margin:0"><strong>Payment received</strong>${money(o.total)} paid${o.paymentId ? ' · reference ' + esc(o.paymentId) : ''}.</div></section>`;
     }
     const busy = isBusy(o);
     const retry = o.payState === 'dismissed' || o.payState === 'failed';
@@ -729,6 +741,68 @@ function upiPanelHTML(o) {
         <a class="btn btn-ghost-dark btn-block" href="${esc(uri)}">Open my UPI app</a>
         <p class="upi-id">or pay this UPI ID: <button type="button" data-action="copy-upi" aria-label="Copy UPI ID">${esc(CONFIG.upiVpa)}</button></p>
         <button type="button" class="btn btn-primary btn-block" data-action="upi-paid" style="margin-top:.9rem">I've paid ${money(o.total)}</button>
+    </section>`;
+}
+
+/* ---------- the bill, generated automatically when an online payment succeeds ---------- */
+// This is a PAYMENT RECEIPT, not a GST tax invoice (that needs a GSTIN, HSN codes and a
+// tax split the site doesn't hold). The page says so, and offers to arrange one.
+function billHTML(o) {
+    const c = o.customer;
+    const when = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(o.paidAt || o.date));
+    const pct = Math.round((CONFIG.taxRate || 0) * 1000) / 10;
+    const seller = [
+        `<strong>${esc(CONFIG.legalName || CONFIG.brand)}</strong>`,
+        CONFIG.businessAddress && esc(CONFIG.businessAddress),
+        CONFIG.gstin && 'GSTIN: ' + esc(CONFIG.gstin),
+        CONFIG.fssaiLicence && 'FSSAI Licence No. ' + esc(CONFIG.fssaiLicence),
+        esc(CONFIG.businessEmail),
+        WA_NUMBER && 'WhatsApp +' + esc(WA_NUMBER),
+    ].filter(Boolean).join('<br>');
+    const buyer = [
+        `<strong>${esc(c.name)}</strong>`,
+        esc(c.address) + (c.landmark ? ' (' + esc(c.landmark) + ')' : ''),
+        esc(c.city) + ', ' + esc(c.state) + ' ' + esc(c.pincode),
+        'Phone: ' + esc(c.phone),
+        c.email && esc(c.email),
+    ].filter(Boolean).join('<br>');
+    const rows = o.items.map(i => `<tr>
+        <td>${esc(i.name)}${i.pack ? `<small>${esc(i.pack)}</small>` : ''}</td>
+        <td class="num">${i.qty}</td><td class="num">${money(i.price)}</td><td class="num">${money(i.price * i.qty)}</td></tr>`).join('');
+    return `<section class="panel bill" id="bill" aria-labelledby="billTitle">
+        <div class="bill-inner">
+            <div class="bill-head">
+                <div><span class="logo display">Gets<b>U</b></span><div class="bill-tag">Made For You</div></div>
+                <div class="bill-meta">
+                    <h2 class="display bill-title" id="billTitle" tabindex="-1">Payment receipt</h2>
+                    <div class="bill-line"><span>Bill no.</span><strong>${esc(o.id)}</strong></div>
+                    <div class="bill-line"><span>Date</span><strong>${esc(when)}</strong></div>
+                    <span class="bill-badge">Paid</span>
+                </div>
+            </div>
+            <div class="bill-parties">
+                <div><h3>Billed to</h3><p>${buyer}</p></div>
+                <div><h3>Sold by</h3><p>${seller}</p></div>
+            </div>
+            <table class="bill-table">
+                <caption class="sr-only">Items on this bill</caption>
+                <thead><tr><th scope="col">Item</th><th scope="col" class="num">Qty</th><th scope="col" class="num">Rate</th><th scope="col" class="num">Amount</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+            <div class="bill-totals">
+                <div class="sum-row"><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
+                <div class="sum-row"><span>Tax${pct ? ` (${pct}%)` : ''}</span><span>${money(o.tax)}</span></div>
+                <div class="sum-row"><span>Shipping</span><span>Free</span></div>
+                <div class="sum-row total"><span>Total paid</span><span>${money(o.total)}</span></div>
+            </div>
+            <p class="bill-pay"><strong>Paid online via Razorpay</strong><br>Payment ID: ${esc(o.paymentId || '—')}</p>
+            <p class="bill-note">This is a payment receipt for your order. For a GST tax invoice, email us your GSTIN at ${esc(CONFIG.businessEmail)}.
+            Your delivery details are not saved on this device, so this bill cannot be shown again once you leave this page — print or save it now.</p>
+        </div>
+        <div class="bill-actions no-print">
+            <button type="button" class="btn btn-primary" data-action="print-bill">Print / Save as PDF</button>
+            <a class="btn btn-ghost-dark" href="#products">Continue shopping</a>
+        </div>
     </section>`;
 }
 
@@ -785,17 +859,19 @@ function renderOrder() {
     const [heading, lead] = orderCopy(o, st);
     $('#orderTitle').textContent = heading;
 
-    let main = `<span class="order-id">Order ${esc(o.id)}</span>`;
+    const paidOnline = o.paid === 'verified';
+    let main = `<span class="order-id no-print">Order ${esc(o.id)}</span>`;
     if (st !== 'cancelled') {
         if (o.method === 'razorpay') main += razorpayPanelHTML(o);
         if (o.method === 'upi') main += upiPanelHTML(o);
         if (o.method !== 'razorpay') main += sendPanelHTML(o);
     }
-    main += `<div class="panel">${cancelZoneHTML(o)}</div>`;
+    if (paidOnline) main += billHTML(o);
+    main += `<div class="panel no-print">${cancelZoneHTML(o)}</div>`;
 
     keepFocus($('#orderBody'), () => {
         $('#orderBody').innerHTML = `<p class="order-lead">${lead}</p>
-            <div class="order-layout"><div class="order-main">${main}</div><aside class="panel summary" aria-label="Order summary">${orderSummaryHTML(o)}</aside></div>`;
+            <div class="order-layout${paidOnline ? ' bill-layout' : ''}"><div class="order-main">${main}</div>${paidOnline ? '' : `<aside class="panel summary" aria-label="Order summary">${orderSummaryHTML(o)}</aside>`}</div>`;
     });
 }
 
@@ -1057,6 +1133,17 @@ const ACTIONS = {
     remove(el) { removeFromCart(el.dataset.id); },
 
     'pay-razorpay'() { startRazorpay(); },
+    // The browser's own print dialog doubles as "Save as PDF". The page title becomes
+    // the suggested file name, so the PDF arrives called GetsU-bill-GU12345678.
+    'print-bill'() {
+        const o = currentOrder;
+        if (!o) return;
+        const before = document.title;
+        const restore = () => { document.title = before; window.removeEventListener('afterprint', restore); };
+        document.title = 'GetsU-bill-' + o.id;
+        window.addEventListener('afterprint', restore);
+        window.print();
+    },
     'upi-paid'() { if (currentOrder) markUpiClaimed(currentOrder); },
     'copy-upi'() { copyText(CONFIG.upiVpa, () => toast('UPI ID copied — paste it in your UPI app.')); },
     'mark-sent'() { const o = currentOrder; if (o) setTimeout(() => markSent(o), 60); }, // after the link opens
