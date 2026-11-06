@@ -3,8 +3,8 @@
 Real photos go here. A product without one shows a designed stand-in, so
 nothing breaks while a photo is missing — but a real photo sells far better.
 
-Currently photographed: `protein-bar-chocolate.jpg`, `pancake-premix.jpg`.
-Still needs one: **High-Protein Oats**.
+Currently photographed: `protein-bar-chocolate.jpg`, `pancake-premix.jpg`, `high-protein-oats.jpg`.
+The three photos are square (900 × 900) crops of a wider picture; `imageFit: 'cover'` fills the card with them.
 
 ## Adding or changing a photo
 
@@ -14,6 +14,7 @@ Still needs one: **High-Protein Oats**.
    ```js
    image: 'images/products/high-protein-oats.jpg',
    imageBg: '#E8E0D4',   // the photo's own background colour, so it blends in
+   imageFit: 'cover',    // optional: fill the frame. Leave out to keep the whole product visible
    ```
 
    (To find `imageBg`, use any colour-picker on the photo's edge.)

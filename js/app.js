@@ -176,7 +176,12 @@ function thumbHTML(p, withLabel) {
     return plateHTML(p, withLabel);
 }
 
-const bgStyle = p => (p.imageBg ? ` style="--media-bg:${esc(p.imageBg)}"` : '');
+const bgStyle = p => {
+    const v = [];
+    if (p.imageBg) v.push('--media-bg:' + esc(p.imageBg));
+    if (p.imageFit === 'cover') v.push('--media-fit:cover', '--media-pad:0');
+    return v.length ? ` style="${v.join(';')}"` : '';
+};
 
 function macrosHTML(p) {
     const n = p.nutrition;
@@ -752,7 +757,7 @@ function billHTML(o) {
     return `<section class="panel bill" id="bill" aria-labelledby="billTitle">
         <div class="bill-inner">
             <div class="bill-head">
-                <div><span class="logo display">Gets<b>U</b></span><div class="bill-tag">Made For You</div></div>
+                <div><span class="logo">Gets<b>U</b></span><div class="bill-tag">Made For You</div></div>
                 <div class="bill-meta">
                     <h2 class="display bill-title" id="billTitle" tabindex="-1">Payment receipt</h2>
                     <div class="bill-line"><span>Bill no.</span><strong>${esc(o.id)}</strong></div>
@@ -1257,6 +1262,8 @@ function initScrollSpy() {
             // the section whose top has passed a line just under the sticky header
             const line = ($('.site-header').offsetHeight || 76) + window.innerHeight * 0.18;
             for (const t of targets) if (t.getBoundingClientRect().top <= line) current = t.id;
+            // up in the hero, "Shop" is the current section (the hero sells the products)
+            if (!current) current = targets[0].id;
             // at the very bottom of the page the last section wins
             if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = targets[targets.length - 1].id;
         }

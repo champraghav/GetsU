@@ -85,4 +85,10 @@ updates a minute or two later.
 
 ## Credits
 
-Headline font: **Fira Sans** (SIL Open Font License), self-hosted in `fonts/`.
+Fonts (all SIL Open Font License, self-hosted in `fonts/`, licences alongside):
+**Source Serif 4** for titles, **Fira Sans** (800 italic) for the logo and the
+big figures, **Inter** for everything else.
+
+The home-page picture (`images/hero-art.jpg`) and the three product photos in
+`images/products/` are square or wide crops of your own pack pictures. To swap
+one, replace the file with a new image of the same name and size.
