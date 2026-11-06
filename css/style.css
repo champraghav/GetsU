@@ -1,12 +1,12 @@
 /* ============================================================
    GETSU — STYLES
    Palette (yours):  sage #9CAF88 · concrete grey #A7A7A7 · burnt amber #CC5500
-   Two dark neutrals are derived from the sage so text stays readable:
-     --ink    dark text on the sage background
-     --panel  dark surface for header, cards and forms
-   (Grey text directly on sage measures 1.02:1 — effectively invisible — so
-   grey is used as the text colour on the dark panels instead, where it
-   measures 6:1.)
+   ALL text is concrete grey, and grey is the line / border / icon colour.
+   Grey text printed straight onto the sage measures 1.02:1 — effectively
+   invisible — so every block of text sits on a dark "plate" (--panel),
+   where the same grey measures 6.1:1. The sage stays the page background
+   around the plates. Amber is used for buttons and highlights only, with
+   white labels on it.
    ============================================================ */
 
 @font-face {
@@ -31,8 +31,9 @@
     --ink-soft: #2C3826;       /* secondary on sage   ~5.5:1 */
     --panel: #232B1F;          /* dark surface        grey on it 6.1:1 */
     --panel-2: #2D3628;        /* raised on panel */
-    --line-dark: #46523E;      /* borders on panel */
-    --light: #F0F2EA;          /* headings/prices on panel 12.9:1 */
+    --line-dark: rgba(167, 167, 167, 0.38);  /* grey lines on a plate */
+    --plate-border: 2px solid rgba(167, 167, 167, 0.55);
+    --light: var(--grey);       /* every text colour on a plate is the concrete grey (6.1:1) */
     --error: #FFB59A;          /* errors on panel */
     --white: #fff;
 
@@ -140,6 +141,21 @@ ul, ol { list-style: none; }
 .link-btn { text-decoration: underline; text-underline-offset: 3px; font-size: 0.95rem; }
 .link-btn:hover { color: var(--amber); }
 
+/* ---------- Plates: dark surfaces that carry the grey text over the sage ---------- */
+.section-head, .hero-copy, .about-body, .contact-list, .order-lead, .steps, .page-title, .faq-heading {
+    background: var(--panel); border: var(--plate-border); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.pcard, .why-card, .contact-card, .faq-item, .panel, .cart-row, .empty { border: var(--plate-border); }
+
+.section-head { padding: 1.6rem 1.9rem; }
+.hero-copy { padding: 2.4rem 2.4rem 2.2rem; }
+.about-body { padding: 1.8rem 2rem; }
+.contact-list { padding: 1.5rem 1.9rem; }
+.order-lead { padding: 1rem 1.3rem; }
+.steps { padding: 0.8rem 1.2rem; width: fit-content; max-width: 100%; }
+.page-title { display: inline-block; max-width: 100%; padding: 0.4rem 1.4rem 0.6rem; }
+.faq-heading { display: inline-block; padding: 0.4rem 1.3rem 0.55rem; }
+
 /* ---------- Header ---------- */
 .site-header {
     position: sticky; top: 0; z-index: 100;
@@ -158,7 +174,7 @@ ul, ol { list-style: none; }
     padding: 0.6rem 0.9rem; text-decoration: none; font-weight: 600; font-size: 0.95rem;
     color: var(--grey); border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
 }
-.main-nav a:hover { color: var(--light); border-bottom-color: var(--amber); }
+.main-nav a:hover { color: var(--white); border-bottom-color: var(--amber); }
 
 .header-actions { display: flex; align-items: center; gap: 0.6rem; }
 
@@ -179,31 +195,31 @@ ul, ol { list-style: none; }
 /* ---------- Shared type ---------- */
 .eyebrow {
     display: flex; align-items: center; gap: 0.7rem;
-    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey);
 }
 .eyebrow-bar { width: 34px; height: 3px; background: var(--amber); border-radius: 2px; }
 
 .section { padding: 4.25rem 0; }
 .section.band { background: var(--sage-deep); }
 .section-head { margin-bottom: 2.25rem; max-width: 720px; }
-.section-head h2 { font-size: clamp(2rem, 4.6vw, 3.1rem); margin: 0.7rem 0 0.8rem; color: var(--ink); }
-.section-sub { font-size: 1.05rem; color: var(--ink-soft); }
+.section-head h2 { font-size: clamp(2rem, 4.6vw, 3.1rem); margin: 0.7rem 0 0.8rem; color: var(--grey); }
+.section-sub { font-size: 1.05rem; color: var(--grey); }
 
 /* ---------- Hero ---------- */
 .hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; align-items: center; padding-top: 3.25rem; padding-bottom: 3.5rem; }
 
-.hero-title { font-size: clamp(2.5rem, 6.4vw, 4.7rem); margin: 1.1rem 0 1.3rem; color: var(--ink); }
+.hero-title { font-size: clamp(2.5rem, 6.4vw, 4.7rem); margin: 1.1rem 0 1.3rem; color: var(--grey); }
 .mark {
     background: var(--amber); color: var(--white); padding: 0 0.16em; margin: 0 -0.02em; border-radius: 0.1em;
     -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
-.hero-lead { font-size: 1.2rem; max-width: 30em; color: var(--ink-soft); margin-bottom: 1.8rem; }
+.hero-lead { font-size: 1.2rem; max-width: 30em; color: var(--grey); margin-bottom: 1.8rem; }
 .hero-actions { margin-bottom: 2.25rem; }
 
-.hero-proof { display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; padding-top: 1.5rem; border-top: 2px solid rgba(28, 36, 24, 0.22); }
+.hero-proof { display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; padding-top: 1.5rem; border-top: 2px solid var(--line-dark); }
 .hero-proof li { display: flex; flex-direction: column; line-height: 1.2; }
-.hero-proof strong { font-size: 1.75rem; color: var(--ink); }
-.hero-proof span { font-size: 0.88rem; color: var(--ink-soft); }
+.hero-proof strong { font-size: 1.75rem; color: var(--grey); }
+.hero-proof span { font-size: 0.88rem; color: var(--grey); }
 
 .hero-media {
     position: relative; display: block; width: 100%; aspect-ratio: 4 / 5; overflow: hidden; padding: 0;
@@ -308,7 +324,7 @@ ul, ol { list-style: none; }
 .why-card h3 { color: var(--light); font-size: 1.15rem; line-height: 1.3; margin-bottom: 0.55rem; }
 
 .about-body { max-width: 720px; }
-.about-body p { font-size: 1.1rem; color: var(--ink-soft); }
+.about-body p { font-size: 1.1rem; color: var(--grey); }
 .about-body p + p { margin-top: 1rem; }
 
 /* ---------- Contact / FAQ ---------- */
@@ -319,12 +335,12 @@ ul, ol { list-style: none; }
 .contact-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
 .contact-email { color: var(--light); font-weight: 600; word-break: break-all; }
 .contact-list { display: grid; gap: 1rem; }
-.contact-list div { padding-bottom: 1rem; border-bottom: 2px solid rgba(28, 36, 24, 0.18); }
+.contact-list div { padding-bottom: 1rem; border-bottom: 2px solid var(--line-dark); }
 .contact-list div:last-child { border-bottom: 0; }
-.contact-list dt { font-weight: 800; color: var(--ink); margin-bottom: 0.2rem; }
-.contact-list dd { color: var(--ink-soft); }
+.contact-list dt { font-weight: 800; color: var(--grey); margin-bottom: 0.2rem; }
+.contact-list dd { color: var(--grey); }
 
-.faq-heading { font-family: var(--display); font-weight: 900; font-style: italic; font-size: 1.7rem; margin: 3rem 0 1rem; color: var(--ink); }
+.faq-heading { font-family: var(--display); font-weight: 900; font-style: italic; font-size: 1.7rem; margin: 3rem 0 1rem; color: var(--grey); }
 .faq-list { display: grid; gap: 0.7rem; max-width: 820px; }
 .faq-item { background: var(--panel); color: var(--grey); border-radius: var(--radius-sm); }
 .faq-item summary { list-style: none; cursor: pointer; padding: 1.05rem 1.3rem; font-weight: 700; color: var(--light); display: flex; justify-content: space-between; gap: 1rem; align-items: center; min-height: 52px; }
@@ -343,23 +359,23 @@ ul, ol { list-style: none; }
 .site-footer h3 { color: var(--light); font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.9rem; }
 .site-footer li + li { margin-top: 0.15rem; }
 .site-footer a, .site-footer .link-btn { text-decoration: none; display: inline-block; padding: 0.3rem 0; min-height: 32px; text-align: left; }
-.site-footer a:hover, .site-footer .link-btn:hover { color: var(--light); text-decoration: underline; }
+.site-footer a:hover, .site-footer .link-btn:hover { color: var(--white); text-decoration: underline; }
 .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 1.5rem; font-size: 0.88rem; }
 #fssaiLine { font-size: 0.82rem; }
 
 /* ---------- Checkout progress ---------- */
 .steps-wrap { padding-top: 1.75rem; }
-.steps { display: flex; align-items: center; gap: 0; max-width: 560px; }
-.steps li { display: flex; align-items: center; gap: 0.6rem; flex: 0 0 auto; color: var(--ink-soft); font-weight: 600; font-size: 0.92rem; }
-.steps li:not(:last-child)::after { content: ''; width: clamp(24px, 6vw, 64px); height: 3px; margin: 0 0.8rem; background: rgba(28, 36, 24, 0.28); border-radius: 2px; }
-.step-dot { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 800; border: 2px solid var(--ink-soft); }
-.steps li.done .step-dot { background: var(--ink); border-color: var(--ink); color: var(--sage); }
-.steps li.done::after { background: var(--ink); }
-.steps li.current { color: var(--ink); }
+.steps { display: flex; align-items: center; gap: 0; }
+.steps li { display: flex; align-items: center; gap: 0.6rem; flex: 0 0 auto; color: var(--grey); font-weight: 600; font-size: 0.92rem; }
+.steps li:not(:last-child)::after { content: ''; width: clamp(24px, 6vw, 64px); height: 3px; margin: 0 0.8rem; background: var(--line-dark); border-radius: 2px; }
+.step-dot { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 800; border: 2px solid var(--grey); }
+.steps li.done .step-dot { background: var(--grey); border-color: var(--grey); color: var(--panel); }
+.steps li.done::after { background: var(--grey); }
+.steps li.current { color: var(--grey); }
 .steps li.current .step-dot { background: var(--amber); border-color: var(--amber); color: var(--white); }
 
 .page { padding-top: 1.25rem; padding-bottom: 4.5rem; }
-.page-title { font-size: clamp(2.1rem, 5.4vw, 3.4rem); margin: 1.1rem 0 1.6rem; color: var(--ink); }
+.page-title { font-size: clamp(2.1rem, 5.4vw, 3.4rem); margin: 1.1rem 0 1.6rem; color: var(--grey); }
 .page-title:focus { outline: none; box-shadow: none; }
 
 /* ---------- Panels, forms ---------- */
@@ -435,7 +451,7 @@ ul, ol { list-style: none; }
 .stepper output { min-width: 38px; text-align: center; font-weight: 800; color: var(--light); font-variant-numeric: tabular-nums; }
 
 .cart-remove { font-size: 0.88rem; color: var(--grey); text-decoration: underline; text-underline-offset: 3px; min-height: 44px; padding: 0 0.3rem; }
-.cart-remove:hover { color: var(--light); }
+.cart-remove:hover { color: var(--white); }
 
 .sum-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.45rem 0; font-variant-numeric: tabular-nums; }
 .sum-row.total { margin-top: 0.6rem; padding-top: 1rem; border-top: 1px solid var(--line-dark); color: var(--light); font-size: 1.3rem; font-weight: 800; }
@@ -452,7 +468,7 @@ ul, ol { list-style: none; }
 
 /* ---------- Order page ---------- */
 .order-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.75rem; align-items: start; }
-.order-lead { font-size: 1.08rem; color: var(--ink-soft); max-width: 40em; margin: -0.6rem 0 1.6rem; }
+.order-lead { font-size: 1.08rem; color: var(--grey); max-width: 40em; margin: 0 0 1.6rem; }
 .order-id { display: inline-block; font-weight: 800; letter-spacing: 0.04em; background: var(--panel); color: var(--light); padding: 0.4rem 0.8rem; border-radius: 8px; margin-bottom: 1.1rem; font-size: 0.92rem; }
 .pay-amount { font-size: 2.2rem; font-weight: 800; color: var(--light); font-variant-numeric: tabular-nums; margin-bottom: 1rem; line-height: 1; }
 .panel .btn + .btn { margin-top: 0.7rem; }
@@ -557,6 +573,10 @@ ul, ol { list-style: none; }
     :root { --header-h: 68px; }
     .wrap { padding-left: 1.1rem; padding-right: 1.1rem; }
     .section { padding: 3rem 0; }
+    .hero-copy { padding: 1.6rem 1.35rem 1.5rem; }
+    .section-head { padding: 1.25rem 1.3rem; }
+    .about-body, .contact-list { padding: 1.35rem 1.3rem; }
+    .page-title { padding: 0.35rem 1.1rem 0.5rem; }
     .logo { font-size: 1.65rem; }
 
     /* phone header: brand, cart, menu */
