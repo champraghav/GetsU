@@ -26,7 +26,7 @@ const PRODUCTS = [
         name: 'Protein Bar — Chocolate Delight',
         category: 'snacks',
         pack: '50 g bar',                       // "NET WT. 50g" on the pack
-        price: 99,
+        price: 10,
         mrp: 129,
         highlights: ['20g protein per bar', 'Plant powered', 'No added sugar'],
         desc: 'Dates, almonds, cashews and peanut butter with pea protein and cocoa.',
