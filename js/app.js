@@ -355,7 +355,6 @@ let currentOrder = null;
 function statusOf(o) {
     if (o.cancelled) return 'cancelled';
     if (o.paid === 'verified') return 'paid';
-    if (o.paid === 'claimed') return 'payment_reported';
     if (o.sent) return 'sent';
     return 'pending';
 }
@@ -440,7 +439,6 @@ function orderText(o) {
     const lines = o.items.map(i => `${i.name} x${i.qty} — ${money(i.price * i.qty)}`).join('\n');
     let pay = 'Payment: ' + PAY_LABEL[o.method];
     if (o.paid === 'verified') pay = 'Payment: PAID online via Razorpay' + (o.paymentId ? ' (' + o.paymentId + ')' : '');
-    if (o.paid === 'claimed') pay = 'Payment: customer says they paid by UPI — please verify';
     return `GetsU Order ${o.id}\n\n${lines}\n\nSubtotal: ${money(o.subtotal)}\nTax: ${money(o.tax)}\nTotal: ${money(o.total)}\n${pay}\n\n` +
         `Deliver to:\n${c.name}\n${c.address}\n${c.city}, ${c.state} ${c.pincode}\nPhone: ${c.phone}` +
         (c.email ? `\nEmail: ${c.email}` : '') + (c.landmark ? `\nLandmark: ${c.landmark}` : '') + (c.notes ? `\n\nNotes: ${c.notes}` : '');
@@ -525,21 +523,25 @@ function markPaid(o, paymentId) {
     if (o.paid === 'verified') return;
     o.paid = 'verified';
     o.paymentId = paymentId || null;
+    o.paidAt = new Date().toISOString();
     o.payState = 'idle';
     ga('purchase', { transaction_id: o.id, value: o.total, currency: 'INR', tax: o.tax, shipping: 0, items: o.items.map(i => ({ item_id: i.id, item_name: i.name, price: i.price, quantity: i.qty })) });
     fbPush('payments', { order_id: o.id, method: 'razorpay', verified: true, razorpay_payment_id: paymentId || null, amount: o.total, timestamp: new Date().toISOString() });
     syncOrder(o, { payment_method: 'razorpay', razorpay_payment_id: paymentId || null, paid_at: new Date().toISOString() });
     finishCheckout();
-    toast('Payment received — your order is confirmed.');
+    toast('Payment received — your bill is ready below.');
+    showBill();
 }
 
-function markUpiClaimed(o) {
-    if (o.paid !== 'none') return;
-    o.paid = 'claimed';
-    fbPush('payments', { order_id: o.id, method: 'upi', verified: false, amount: o.total, timestamp: new Date().toISOString() });
-    syncOrder(o, { payment_method: 'upi', paid_at: new Date().toISOString() });
-    finishCheckout();
-    toast('Thanks — we will verify your payment and confirm shortly.');
+// The bill appears the moment payment succeeds: bring it into view and put
+// keyboard / screen-reader focus on it.
+function showBill() {
+    requestAnimationFrame(() => {
+        const t = $('#billTitle');
+        if (!t) return;
+        $('#bill').scrollIntoView({ behavior: 'auto', block: 'start' });
+        t.focus({ preventScroll: true });
+    });
 }
 
 function markSent(o) {
@@ -669,7 +671,7 @@ function updatePlaceButton() {
         note.textContent = 'You can cancel the payment at any time before it goes through.';
     } else if (payMethod === 'upi') {
         btn.textContent = 'Continue to UPI payment';
-        note.textContent = 'Next you will scan a QR code, then send us your delivery details.';
+        note.textContent = 'Next you will see a QR code and a UPI ID to pay.';
     } else {
         btn.textContent = 'Review & send order';
         note.textContent = `Next, your order opens ${WA_NUMBER ? 'in WhatsApp' : 'in your email app'} for you to send. It isn't placed until you press send.`;
@@ -679,24 +681,18 @@ function updatePlaceButton() {
 /* ---------- ORDER PAGE ---------- */
 function orderCopy(o, st) {
     if (st === 'cancelled') return ['Order cancelled', 'No payment was taken. Your cart is still here if you want to change it and try again.'];
-    if (st === 'paid') return ['Payment received — thank you', `Your order ${o.id} is confirmed. Razorpay will send you a receipt, and we'll message you the delivery details.`];
-    if (st === 'payment_reported') {
-        return ['Thanks — we\'re verifying your payment', o.sent
-            ? 'We\'ll match your UPI payment to this order and confirm by message, usually within a few hours.'
-            : 'We\'ll match your UPI payment to this order. Please also send us your delivery details below so we can ship.'];
-    }
+    if (st === 'paid') return ['Payment received — thank you', `Your order ${o.id} is confirmed and your bill is below. Print or save it now, and we'll message you the delivery details.`];
     if (st === 'sent') {
         return ['Almost there — press send', `If ${WA_NUMBER ? 'WhatsApp' : 'your email app'} opened, just press send. We reply within a day to confirm stock, delivery and payment.`];
     }
     if (o.method === 'razorpay') return ['Complete your payment', `Pay ${money(o.total)} to confirm your order. Nothing is placed until the payment succeeds.`];
-    if (o.method === 'upi') return ['Pay by UPI', 'Scan the QR code with any UPI app, tap “I\'ve paid”, then send us your delivery details so we can ship.'];
+    if (o.method === 'upi') return ['Pay by UPI', 'Scan the QR code with any UPI app, or pay to the UPI ID below. Scanning fills your order number into the payment note.'];
     return ['Send us your order', `Your order isn't with us yet. Tap below and ${WA_NUMBER ? 'WhatsApp' : 'your email app'} opens with everything written out — just press send. We'll confirm, then you pay.`];
 }
 
 function razorpayPanelHTML(o) {
     if (o.paid === 'verified') {
-        return `<section class="panel"><div class="notice ok"><strong>Payment received</strong>${money(o.total)} paid${o.paymentId ? ' · reference ' + esc(o.paymentId) : ''}.</div>
-            <a class="btn btn-primary btn-block" href="#products">Continue shopping</a></section>`;
+        return `<section class="panel no-print"><div class="notice ok" style="margin:0"><strong>Payment received</strong>${money(o.total)} paid${o.paymentId ? ' · reference ' + esc(o.paymentId) : ''}.</div></section>`;
     }
     const busy = isBusy(o);
     const retry = o.payState === 'dismissed' || o.payState === 'failed';
@@ -715,9 +711,6 @@ function razorpayPanelHTML(o) {
 }
 
 function upiPanelHTML(o) {
-    if (o.paid === 'claimed') {
-        return `<section class="panel"><div class="notice ok"><strong>Payment reported</strong>We'll verify ${money(o.total)} in our UPI account and confirm by message.</div></section>`;
-    }
     const uri = `upi://pay?pa=${encodeURIComponent(CONFIG.upiVpa)}&pn=${encodeURIComponent(CONFIG.upiPayeeName || CONFIG.brand)}&am=${o.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + o.id)}`;
     return `<section class="panel">
         <h2 class="panel-title">Pay by UPI</h2>
@@ -728,13 +721,74 @@ function upiPanelHTML(o) {
         </div>
         <a class="btn btn-ghost-dark btn-block" href="${esc(uri)}">Open my UPI app</a>
         <p class="upi-id">or pay this UPI ID: <button type="button" data-action="copy-upi" aria-label="Copy UPI ID">${esc(CONFIG.upiVpa)}</button></p>
-        <button type="button" class="btn btn-primary btn-block" data-action="upi-paid" style="margin-top:.9rem">I've paid ${money(o.total)}</button>
+    </section>`;
+}
+
+/* ---------- the bill, generated automatically when an online payment succeeds ---------- */
+// This is a PAYMENT RECEIPT, not a GST tax invoice (that needs a GSTIN, HSN codes and a
+// tax split the site doesn't hold). The page says so, and offers to arrange one.
+function billHTML(o) {
+    const c = o.customer;
+    const when = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(o.paidAt || o.date));
+    const pct = Math.round((CONFIG.taxRate || 0) * 1000) / 10;
+    const seller = [
+        `<strong>${esc(CONFIG.legalName || CONFIG.brand)}</strong>`,
+        CONFIG.businessAddress && esc(CONFIG.businessAddress),
+        CONFIG.gstin && 'GSTIN: ' + esc(CONFIG.gstin),
+        CONFIG.fssaiLicence && 'FSSAI Licence No. ' + esc(CONFIG.fssaiLicence),
+        esc(CONFIG.businessEmail),
+        WA_NUMBER && 'WhatsApp +' + esc(WA_NUMBER),
+    ].filter(Boolean).join('<br>');
+    const buyer = [
+        `<strong>${esc(c.name)}</strong>`,
+        esc(c.address) + (c.landmark ? ' (' + esc(c.landmark) + ')' : ''),
+        esc(c.city) + ', ' + esc(c.state) + ' ' + esc(c.pincode),
+        'Phone: ' + esc(c.phone),
+        c.email && esc(c.email),
+    ].filter(Boolean).join('<br>');
+    const rows = o.items.map(i => `<tr>
+        <td>${esc(i.name)}${i.pack ? `<small>${esc(i.pack)}</small>` : ''}</td>
+        <td class="num">${i.qty}</td><td class="num">${money(i.price)}</td><td class="num">${money(i.price * i.qty)}</td></tr>`).join('');
+    return `<section class="panel bill" id="bill" aria-labelledby="billTitle">
+        <div class="bill-inner">
+            <div class="bill-head">
+                <div><span class="logo display">Gets<b>U</b></span><div class="bill-tag">Made For You</div></div>
+                <div class="bill-meta">
+                    <h2 class="display bill-title" id="billTitle" tabindex="-1">Payment receipt</h2>
+                    <div class="bill-line"><span>Bill no.</span><strong>${esc(o.id)}</strong></div>
+                    <div class="bill-line"><span>Date</span><strong>${esc(when)}</strong></div>
+                    <span class="bill-badge">Paid</span>
+                </div>
+            </div>
+            <div class="bill-parties">
+                <div><h3>Billed to</h3><p>${buyer}</p></div>
+                <div><h3>Sold by</h3><p>${seller}</p></div>
+            </div>
+            <table class="bill-table">
+                <caption class="sr-only">Items on this bill</caption>
+                <thead><tr><th scope="col">Item</th><th scope="col" class="num">Qty</th><th scope="col" class="num">Rate</th><th scope="col" class="num">Amount</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+            <div class="bill-totals">
+                <div class="sum-row"><span>Subtotal</span><span>${money(o.subtotal)}</span></div>
+                <div class="sum-row"><span>Tax${pct ? ` (${pct}%)` : ''}</span><span>${money(o.tax)}</span></div>
+                <div class="sum-row"><span>Shipping</span><span>Free</span></div>
+                <div class="sum-row total"><span>Total paid</span><span>${money(o.total)}</span></div>
+            </div>
+            <p class="bill-pay"><strong>Paid online via Razorpay</strong><br>Payment ID: ${esc(o.paymentId || '—')}</p>
+            <p class="bill-note">This is a payment receipt for your order. For a GST tax invoice, email us your GSTIN at ${esc(CONFIG.businessEmail)}.
+            Your delivery details are not saved on this device, so this bill cannot be shown again once you leave this page — print or save it now.</p>
+        </div>
+        <div class="bill-actions no-print">
+            <button type="button" class="btn btn-primary" data-action="print-bill">Print / Save as PDF</button>
+            <a class="btn btn-ghost-dark" href="#products">Continue shopping</a>
+        </div>
     </section>`;
 }
 
 function sendPanelHTML(o) {
     const wa = waHref(o);
-    const heading = o.method === 'upi' ? 'Send us your delivery details' : 'Send your order';
+    const heading = 'Send your order';
     let inner;
     if (o.sent) {
         inner = `<div class="notice ok"><strong>Message ready</strong>Press send in ${WA_NUMBER ? 'WhatsApp' : 'your email app'} if you haven't yet. If it didn't open, use the buttons below.</div>`;
@@ -759,7 +813,7 @@ function cancelZoneHTML(o) {
     const noun = o.method === 'later' ? 'order' : 'payment';
     if (o.cancelAsk) {
         return `<div class="cancel-zone cancel-confirm" role="group" aria-label="Confirm cancellation">
-            <p>Cancel this ${noun}? No money will be taken and your cart will be kept.${o.method === 'upi' ? ' <strong>If you have already sent money by UPI, don\'t cancel — tap “I\'ve paid” and message us.</strong>' : ''}</p>
+            <p>Cancel this ${noun}? No money will be taken and your cart will be kept.${o.method === 'upi' ? ' <strong>If you have already sent money by UPI, don\'t cancel — message us your order number.</strong>' : ''}</p>
             <button type="button" class="btn btn-danger" data-action="cancel-yes">Yes, cancel ${noun}</button>
             <button type="button" class="btn btn-ghost-dark" data-action="cancel-no">Keep my order</button>
         </div>`;
@@ -785,17 +839,19 @@ function renderOrder() {
     const [heading, lead] = orderCopy(o, st);
     $('#orderTitle').textContent = heading;
 
-    let main = `<span class="order-id">Order ${esc(o.id)}</span>`;
+    const paidOnline = o.paid === 'verified';
+    let main = `<span class="order-id no-print">Order ${esc(o.id)}</span>`;
     if (st !== 'cancelled') {
         if (o.method === 'razorpay') main += razorpayPanelHTML(o);
         if (o.method === 'upi') main += upiPanelHTML(o);
-        if (o.method !== 'razorpay') main += sendPanelHTML(o);
+        if (o.method === 'later') main += sendPanelHTML(o);
     }
-    main += `<div class="panel">${cancelZoneHTML(o)}</div>`;
+    if (paidOnline) main += billHTML(o);
+    main += `<div class="panel no-print">${cancelZoneHTML(o)}</div>`;
 
     keepFocus($('#orderBody'), () => {
         $('#orderBody').innerHTML = `<p class="order-lead">${lead}</p>
-            <div class="order-layout"><div class="order-main">${main}</div><aside class="panel summary" aria-label="Order summary">${orderSummaryHTML(o)}</aside></div>`;
+            <div class="order-layout${paidOnline ? ' bill-layout' : ''}"><div class="order-main">${main}</div>${paidOnline ? '' : `<aside class="panel summary" aria-label="Order summary">${orderSummaryHTML(o)}</aside>`}</div>`;
     });
 }
 
@@ -1057,7 +1113,17 @@ const ACTIONS = {
     remove(el) { removeFromCart(el.dataset.id); },
 
     'pay-razorpay'() { startRazorpay(); },
-    'upi-paid'() { if (currentOrder) markUpiClaimed(currentOrder); },
+    // The browser's own print dialog doubles as "Save as PDF". The page title becomes
+    // the suggested file name, so the PDF arrives called GetsU-bill-GU12345678.
+    'print-bill'() {
+        const o = currentOrder;
+        if (!o) return;
+        const before = document.title;
+        const restore = () => { document.title = before; window.removeEventListener('afterprint', restore); };
+        document.title = 'GetsU-bill-' + o.id;
+        window.addEventListener('afterprint', restore);
+        window.print();
+    },
     'copy-upi'() { copyText(CONFIG.upiVpa, () => toast('UPI ID copied — paste it in your UPI app.')); },
     'mark-sent'() { const o = currentOrder; if (o) setTimeout(() => markSent(o), 60); }, // after the link opens
     'copy-order'() {
@@ -1177,6 +1243,36 @@ function injectStructuredData() {
     });
 }
 
+/* Highlights the nav link for the section being read (home page only). */
+function initScrollSpy() {
+    const links = $$('#mainNav a[href^="#"]');
+    const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+    if (!links.length || !targets.length) return;
+    let ticking = false;
+
+    function update() {
+        ticking = false;
+        let current = '';
+        if (view === 'home') {
+            // the section whose top has passed a line just under the sticky header
+            const line = ($('.site-header').offsetHeight || 76) + window.innerHeight * 0.18;
+            for (const t of targets) if (t.getBoundingClientRect().top <= line) current = t.id;
+            // at the very bottom of the page the last section wins
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = targets[targets.length - 1].id;
+        }
+        links.forEach(a => {
+            const on = a.getAttribute('href') === '#' + current;
+            a.classList.toggle('active', on);
+            if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+        });
+    }
+    const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    window.addEventListener('hashchange', queue);
+    update();
+}
+
 function init() {
     renderProducts();
     $('#fssaiLine').textContent = CONFIG.fssaiLicence ? 'FSSAI Licence No. ' + CONFIG.fssaiLicence : '';
@@ -1190,6 +1286,7 @@ function init() {
     fbPush('page_views', { user_id: userId(), timestamp: new Date().toISOString(), page: location.pathname, referrer: document.referrer || 'direct' });
     renderCartBadge();
     route();
+    initScrollSpy();
 }
 
 init();
