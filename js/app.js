@@ -355,7 +355,6 @@ let currentOrder = null;
 function statusOf(o) {
     if (o.cancelled) return 'cancelled';
     if (o.paid === 'verified') return 'paid';
-    if (o.paid === 'claimed') return 'payment_reported';
     if (o.sent) return 'sent';
     return 'pending';
 }
@@ -440,7 +439,6 @@ function orderText(o) {
     const lines = o.items.map(i => `${i.name} x${i.qty} — ${money(i.price * i.qty)}`).join('\n');
     let pay = 'Payment: ' + PAY_LABEL[o.method];
     if (o.paid === 'verified') pay = 'Payment: PAID online via Razorpay' + (o.paymentId ? ' (' + o.paymentId + ')' : '');
-    if (o.paid === 'claimed') pay = 'Payment: customer says they paid by UPI — please verify';
     return `GetsU Order ${o.id}\n\n${lines}\n\nSubtotal: ${money(o.subtotal)}\nTax: ${money(o.tax)}\nTotal: ${money(o.total)}\n${pay}\n\n` +
         `Deliver to:\n${c.name}\n${c.address}\n${c.city}, ${c.state} ${c.pincode}\nPhone: ${c.phone}` +
         (c.email ? `\nEmail: ${c.email}` : '') + (c.landmark ? `\nLandmark: ${c.landmark}` : '') + (c.notes ? `\n\nNotes: ${c.notes}` : '');
@@ -544,15 +542,6 @@ function showBill() {
         $('#bill').scrollIntoView({ behavior: 'auto', block: 'start' });
         t.focus({ preventScroll: true });
     });
-}
-
-function markUpiClaimed(o) {
-    if (o.paid !== 'none') return;
-    o.paid = 'claimed';
-    fbPush('payments', { order_id: o.id, method: 'upi', verified: false, amount: o.total, timestamp: new Date().toISOString() });
-    syncOrder(o, { payment_method: 'upi', paid_at: new Date().toISOString() });
-    finishCheckout();
-    toast('Thanks — we will verify your payment and confirm shortly.');
 }
 
 function markSent(o) {
@@ -682,7 +671,7 @@ function updatePlaceButton() {
         note.textContent = 'You can cancel the payment at any time before it goes through.';
     } else if (payMethod === 'upi') {
         btn.textContent = 'Continue to UPI payment';
-        note.textContent = 'Next you will scan a QR code, then send us your delivery details.';
+        note.textContent = 'Next you will see a QR code and a UPI ID to pay.';
     } else {
         btn.textContent = 'Review & send order';
         note.textContent = `Next, your order opens ${WA_NUMBER ? 'in WhatsApp' : 'in your email app'} for you to send. It isn't placed until you press send.`;
@@ -693,16 +682,11 @@ function updatePlaceButton() {
 function orderCopy(o, st) {
     if (st === 'cancelled') return ['Order cancelled', 'No payment was taken. Your cart is still here if you want to change it and try again.'];
     if (st === 'paid') return ['Payment received — thank you', `Your order ${o.id} is confirmed and your bill is below. Print or save it now, and we'll message you the delivery details.`];
-    if (st === 'payment_reported') {
-        return ['Thanks — we\'re verifying your payment', o.sent
-            ? 'We\'ll match your UPI payment to this order and confirm by message, usually within a few hours.'
-            : 'We\'ll match your UPI payment to this order. Please also send us your delivery details below so we can ship.'];
-    }
     if (st === 'sent') {
         return ['Almost there — press send', `If ${WA_NUMBER ? 'WhatsApp' : 'your email app'} opened, just press send. We reply within a day to confirm stock, delivery and payment.`];
     }
     if (o.method === 'razorpay') return ['Complete your payment', `Pay ${money(o.total)} to confirm your order. Nothing is placed until the payment succeeds.`];
-    if (o.method === 'upi') return ['Pay by UPI', 'Scan the QR code with any UPI app, tap “I\'ve paid”, then send us your delivery details so we can ship.'];
+    if (o.method === 'upi') return ['Pay by UPI', 'Scan the QR code with any UPI app, or pay to the UPI ID below. Scanning fills your order number into the payment note.'];
     return ['Send us your order', `Your order isn't with us yet. Tap below and ${WA_NUMBER ? 'WhatsApp' : 'your email app'} opens with everything written out — just press send. We'll confirm, then you pay.`];
 }
 
@@ -727,9 +711,6 @@ function razorpayPanelHTML(o) {
 }
 
 function upiPanelHTML(o) {
-    if (o.paid === 'claimed') {
-        return `<section class="panel"><div class="notice ok"><strong>Payment reported</strong>We'll verify ${money(o.total)} in our UPI account and confirm by message.</div></section>`;
-    }
     const uri = `upi://pay?pa=${encodeURIComponent(CONFIG.upiVpa)}&pn=${encodeURIComponent(CONFIG.upiPayeeName || CONFIG.brand)}&am=${o.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + o.id)}`;
     return `<section class="panel">
         <h2 class="panel-title">Pay by UPI</h2>
@@ -740,7 +721,6 @@ function upiPanelHTML(o) {
         </div>
         <a class="btn btn-ghost-dark btn-block" href="${esc(uri)}">Open my UPI app</a>
         <p class="upi-id">or pay this UPI ID: <button type="button" data-action="copy-upi" aria-label="Copy UPI ID">${esc(CONFIG.upiVpa)}</button></p>
-        <button type="button" class="btn btn-primary btn-block" data-action="upi-paid" style="margin-top:.9rem">I've paid ${money(o.total)}</button>
     </section>`;
 }
 
@@ -808,7 +788,7 @@ function billHTML(o) {
 
 function sendPanelHTML(o) {
     const wa = waHref(o);
-    const heading = o.method === 'upi' ? 'Send us your delivery details' : 'Send your order';
+    const heading = 'Send your order';
     let inner;
     if (o.sent) {
         inner = `<div class="notice ok"><strong>Message ready</strong>Press send in ${WA_NUMBER ? 'WhatsApp' : 'your email app'} if you haven't yet. If it didn't open, use the buttons below.</div>`;
@@ -833,7 +813,7 @@ function cancelZoneHTML(o) {
     const noun = o.method === 'later' ? 'order' : 'payment';
     if (o.cancelAsk) {
         return `<div class="cancel-zone cancel-confirm" role="group" aria-label="Confirm cancellation">
-            <p>Cancel this ${noun}? No money will be taken and your cart will be kept.${o.method === 'upi' ? ' <strong>If you have already sent money by UPI, don\'t cancel — tap “I\'ve paid” and message us.</strong>' : ''}</p>
+            <p>Cancel this ${noun}? No money will be taken and your cart will be kept.${o.method === 'upi' ? ' <strong>If you have already sent money by UPI, don\'t cancel — message us your order number.</strong>' : ''}</p>
             <button type="button" class="btn btn-danger" data-action="cancel-yes">Yes, cancel ${noun}</button>
             <button type="button" class="btn btn-ghost-dark" data-action="cancel-no">Keep my order</button>
         </div>`;
@@ -864,7 +844,7 @@ function renderOrder() {
     if (st !== 'cancelled') {
         if (o.method === 'razorpay') main += razorpayPanelHTML(o);
         if (o.method === 'upi') main += upiPanelHTML(o);
-        if (o.method !== 'razorpay') main += sendPanelHTML(o);
+        if (o.method === 'later') main += sendPanelHTML(o);
     }
     if (paidOnline) main += billHTML(o);
     main += `<div class="panel no-print">${cancelZoneHTML(o)}</div>`;
@@ -1144,7 +1124,6 @@ const ACTIONS = {
         window.addEventListener('afterprint', restore);
         window.print();
     },
-    'upi-paid'() { if (currentOrder) markUpiClaimed(currentOrder); },
     'copy-upi'() { copyText(CONFIG.upiVpa, () => toast('UPI ID copied — paste it in your UPI app.')); },
     'mark-sent'() { const o = currentOrder; if (o) setTimeout(() => markSent(o), 60); }, // after the link opens
     'copy-order'() {

@@ -22,7 +22,7 @@ Everything a non-developer should ever touch is in `js/config.js` and
 1. **Cart page** (`#/cart`) — review, change quantities, remove items.
 2. **Place your order** (`#/checkout`) — delivery details, then choose how to pay:
    - **Pay online** (Razorpay) — appears once `razorpayKeyId` is set.
-   - **Pay by UPI** — QR code with the exact amount; appears when `upiVpa` is set.
+   - **Pay by UPI** — QR code and UPI ID with the exact amount; appears when `upiVpa` is set.
    - **Send the order, pay after we confirm** — opens WhatsApp (or email) with the
      order written out for the customer to send.
 3. **Order page** (`#/order`) — pay or send. Until a payment goes through there is
@@ -42,8 +42,8 @@ after the bill number.
   `businessAddress` and `gstin` in `js/config.js` and they are printed on the bill.
 - The customer's details are not stored (see below), so a bill cannot be shown again
   after the page is refreshed. The page tells the customer to print or save it.
-- Only a successful *online* payment produces a bill. A UPI "I've paid" tap is just a
-  claim, so it does not.
+- Only a successful *online* payment produces a bill. UPI and pay-later orders do not,
+  because the site cannot tell that anything was paid.
 
 ## Testing with dummy money (Razorpay test mode)
 
