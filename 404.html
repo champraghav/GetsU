@@ -4,34 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#232B1F">
+<meta name="theme-color" content="#34361B">
 <title>Page not found — GetsU</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23232B1F'/%3E%3Ctext x='16' y='24' font-family='Arial Black,Arial,sans-serif' font-style='italic' font-size='21' font-weight='900' fill='%23CC5500' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2334361B'/%3E%3Ctext x='16' y='24' font-family='Arial Black,Arial,sans-serif' font-style='italic' font-size='21' font-weight='900' fill='%23EE6427' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
 <style>
 /* GitHub Pages serves this file for any missing address, at any depth, so the
-   font is addressed from the site root. If the site moves to its own domain
+   fonts are addressed from the site root. If the site moves to its own domain
    (e.g. getsu.in), change /GetsU-/ below to just / . */
-@font-face{font-family:'Fira Sans';font-style:italic;font-weight:900;font-display:swap;
-  src:url('/GetsU-/fonts/fira-sans-900-italic.woff2') format('woff2')}
-:root{--sage:#9CAF88;--grey:#A7A7A7;--amber:#CC5500;--amber-press:#A64400;--ink:#1C2418;--ink-soft:#2C3826;--panel:#232B1F;--light:#F0F2EA}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;
+  src:url('/GetsU-/fonts/inter-latin-wght.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:200 900;font-display:swap;
+  src:url('/GetsU-/fonts/source-serif-4-latin-wght.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212}
+@font-face{font-family:'Fira Sans';font-style:italic;font-weight:800;font-display:swap;
+  src:url('/GetsU-/fonts/fira-sans-800-italic.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212}
+:root{--olive:#43461F;--panel:#272912;--cream:#F4E8C5;--cream-hi:#FEF6DF;--gold:#EBD9A6;--orange-a:#B8340F;--orange-b:#C45508;--orange-hi:#EE6427}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--sage);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+body{background-color:var(--olive);
+  background-image:radial-gradient(900px 520px at 88% 0%,rgba(98,102,54,.55),rgba(98,102,54,0) 70%),radial-gradient(760px 520px at 0% 90%,rgba(86,90,44,.5),rgba(86,90,44,0) 70%);
+  color:var(--cream);font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
   min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:2rem;line-height:1.6}
-.wrap{max-width:540px;text-align:center;background:var(--panel);border:2px solid rgba(167,167,167,.55);border-radius:18px;padding:2.5rem 2rem 2.4rem;box-shadow:0 10px 30px rgba(28,36,24,.22)}
-.logo{font-family:'Fira Sans','Arial Black',Arial,sans-serif;font-weight:900;font-style:italic;font-size:2rem;color:var(--grey);letter-spacing:-.02em;margin-bottom:2rem}
-.logo b{color:var(--amber)}
-.code{display:inline-block;border:2px solid var(--grey);color:var(--grey);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.4rem .9rem;border-radius:8px;margin-bottom:1.3rem}
-h1{font-family:'Fira Sans','Arial Black',Arial,sans-serif;font-weight:900;font-style:italic;letter-spacing:-.02em;line-height:1.05;
-  font-size:clamp(2.2rem,7vw,3.2rem);margin-bottom:1rem;color:var(--grey)}
-p{color:var(--grey);font-size:1.1rem;margin-bottom:2rem}
+.wrap{max-width:540px;text-align:center;background:rgba(34,36,17,.82);border:1px solid rgba(244,232,197,.2);border-radius:26px;padding:2.6rem 2rem 2.5rem;box-shadow:0 30px 70px rgba(10,12,2,.4)}
+.logo{font-family:'Fira Sans','Arial Black',Arial,sans-serif;font-weight:800;font-style:italic;font-size:2.1rem;color:var(--cream-hi);letter-spacing:-.02em;margin-bottom:1.8rem}
+.logo b{color:var(--orange-hi);font-weight:800}
+.code{display:inline-block;border:1px solid rgba(244,232,197,.4);color:var(--gold);font-size:.78rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:.4rem .95rem;border-radius:999px;margin-bottom:1.3rem}
+h1{font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:-.012em;line-height:1.1;
+  font-size:clamp(2.1rem,7vw,3rem);margin-bottom:1rem;color:var(--cream-hi)}
+p{color:var(--cream);font-size:1.08rem;margin-bottom:2rem}
 .actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:.8rem 1.7rem;border-radius:10px;
-  font-weight:700;font-size:1rem;text-decoration:none;border:2px solid transparent;transition:background .2s,color .2s}
-.btn-primary{background:var(--amber);color:#fff}
-.btn-primary:hover{background:var(--amber-press)}
-.btn-ghost{color:var(--grey);border-color:var(--grey)}
-.btn-ghost:hover{background:var(--grey);color:var(--panel)}
-:focus-visible{outline:3px solid var(--light);outline-offset:3px;box-shadow:0 0 0 6px rgba(28,36,24,.9)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:.8rem 1.8rem;border-radius:999px;
+  font-weight:600;font-size:1rem;text-decoration:none;border:1.5px solid transparent;transition:filter .2s,background .2s}
+.btn-primary{color:#fff;background-color:var(--orange-b);background-image:linear-gradient(100deg,var(--orange-a),var(--orange-b));
+  border-color:rgba(255,214,170,.2);box-shadow:0 10px 26px rgba(224,96,24,.34),inset 0 1px 0 rgba(255,255,255,.24)}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-ghost{color:var(--cream-hi);border-color:rgba(244,232,197,.45);background:rgba(244,232,197,.04)}
+.btn-ghost:hover{background:rgba(244,232,197,.14);border-color:var(--cream)}
+:focus-visible{outline:3px solid var(--cream-hi);outline-offset:3px;box-shadow:0 0 0 6px rgba(16,18,4,.8)}
 </style>
 </head>
 <body>

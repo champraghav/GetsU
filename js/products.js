@@ -34,7 +34,8 @@ const PRODUCTS = [
         ingredients: 'Dates, almonds, cashews, peanut butter, pea protein isolate, cocoa powder, natural flavour, pink salt.',
         allergens: 'Almonds, cashews and peanuts',
         image: 'images/products/protein-bar-chocolate.jpg',
-        imageBg: '#ECE7E4',                     // matches the photo's own background
+        imageBg: '#8F9C7E',                     // the photo's own background, shown while it loads
+        imageFit: 'cover',                      // photo fills the frame ('contain' keeps a product shot whole)
     },
     {
         id: 9,
@@ -49,13 +50,14 @@ const PRODUCTS = [
         ingredients: 'Ragi flour, oats flour, sattu (roasted gram flour), pea protein, monk fruit, baking powder, flaxseed powder, chia seeds, pink salt.',
         allergens: 'Oats (a cereal containing gluten)',
         image: 'images/products/pancake-premix.jpg',
-        imageBg: '#E1D1C1',
+        imageBg: '#8F9C7E',                     // the photo's own background, shown while it loads
+        imageFit: 'cover',
     },
     {
         id: 1,
         name: 'High-Protein Oats',
         category: 'breakfast',
-        pack: '',                               // add the printed net weight, e.g. '250 g pouch'
+        pack: '100 g pouch',                    // "NET WT. 100g" on the pack
         price: 349,
         mrp: 449,
         highlights: ['Whey protein + almonds'],
@@ -67,7 +69,8 @@ const PRODUCTS = [
         //   nutrition: { per: '45 g serving', kcal: 0, protein: 0, carbs: 0, sugar: 0, fat: 0, fibre: 0 },
         ingredients: 'Rolled oats, whey protein concentrate, almonds, cinnamon, natural vanilla.',
         allergens: 'Milk, almonds and oats (a cereal containing gluten)',
-        image: '',                              // add e.g. 'images/products/high-protein-oats.jpg'
-        imageBg: '',
+        image: 'images/products/high-protein-oats.jpg',
+        imageBg: '#8F9C7E',                     // the photo's own background, shown while it loads
+        imageFit: 'cover',
     },
 ];
