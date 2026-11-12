@@ -8,6 +8,11 @@
      · whatsappNumber blank  → no WhatsApp button; orders go by email
      · razorpayKeyId blank   → "Pay online" is hidden at checkout
      · upiVpa blank          → "Pay by UPI" is hidden at checkout
+
+   Only "Pay online" (Razorpay) can show the customer "Payment successful,
+   order confirmed" by itself, with a bill. A plain UPI QR pays your UPI ID
+   directly and the website never hears about it, so once razorpayKeyId is
+   filled in, the plain "Pay by UPI" QR is hidden (Razorpay takes UPI too).
    ============================================================ */
 const CONFIG = {
     brand: 'GetsU',
@@ -26,6 +31,7 @@ const CONFIG = {
     razorpayKeyId: '',
 
     // Your UPI ID, and the name customers see in their UPI app.
+    // Used for the plain UPI QR, which shows only while razorpayKeyId is blank.
     upiVpa: 'soniraghav350-1@oksbi',
     upiPayeeName: 'GetsU',
 

@@ -580,6 +580,22 @@ ul, ol { list-style: none; }
 .notice { padding: 0.9rem 1.05rem; border-radius: var(--radius-sm); background: var(--panel-2); border-left: 4px solid var(--orange-hi); margin-bottom: 1rem; color: var(--cream); font-size: 0.95rem; }
 .notice strong { display: block; }
 .notice.ok { border-left-color: #8FD19E; }
+
+/* "Payment successful": shown the moment the online payment goes through */
+.panel.success { display: flex; gap: 1.2rem; align-items: flex-start; border: 1.5px solid rgba(143, 209, 158, 0.6); background: linear-gradient(160deg, rgba(60, 96, 58, 0.5), rgba(34, 36, 17, 0.8)); animation: fade-in 0.4s ease backwards; }
+.success-icon { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #8FD19E; color: #12240F; box-shadow: 0 0 0 7px rgba(143, 209, 158, 0.2); }
+.success-icon .icon { width: 30px; height: 30px; stroke-width: 3; }
+.success-icon { animation: pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.1s backwards; }
+@keyframes pop { from { transform: scale(0.4); opacity: 0; } }
+.success-body { flex: 1; min-width: 0; }
+.success-title { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; line-height: 1.15; color: var(--cream-hi); }
+.success-title:focus { outline: none; box-shadow: none; }
+.success-line { font-size: 1.1rem; margin-top: 0.3rem; }
+.success-line strong { color: var(--cream-hi); letter-spacing: 0.02em; }
+.success-facts { display: grid; grid-template-columns: repeat(3, minmax(0, auto)); justify-content: start; gap: 0.8rem 2.2rem; margin: 1.1rem 0 1rem; padding: 0.9rem 0; border-top: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); }
+.success-facts dt { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.success-facts dd { font-weight: 700; color: var(--cream-hi); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.success-next { font-size: 0.95rem; }
 .spinner { width: 18px; height: 18px; border: 3px solid rgba(255, 255, 255, 0.35); border-top-color: var(--white); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -767,6 +783,10 @@ ul, ol { list-style: none; }
     .bill-line { justify-content: flex-start; }
     .bill-actions { padding: 0 1.1rem 1.4rem; }
     .bill-actions .btn { width: 100%; }
+    .panel.success { flex-direction: column; gap: 0.9rem; }
+    .success-icon { width: 48px; height: 48px; }
+    .success-title { font-size: 1.6rem; }
+    .success-facts { grid-template-columns: 1fr; gap: 0.6rem; }
     .logo { font-size: 1.65rem; }
 
     /* phone header: brand, cart, menu */

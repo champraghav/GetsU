@@ -21,18 +21,24 @@ Everything a non-developer should ever touch is in `js/config.js` and
 
 1. **Cart page** (`#/cart`) — review, change quantities, remove items.
 2. **Place your order** (`#/checkout`) — delivery details, then choose how to pay:
-   - **Pay online** (Razorpay) — appears once `razorpayKeyId` is set.
-   - **Pay by UPI** — QR code and UPI ID with the exact amount; appears when `upiVpa` is set.
+   - **Pay online** (Razorpay) — appears once `razorpayKeyId` is set. This is the only
+     way the site can show "Payment successful, order confirmed" by itself.
+   - **Pay by UPI** — a plain QR code and UPI ID with the exact amount. The money goes
+     straight to your UPI ID and the website never hears about it, so nothing changes
+     on screen after the customer pays. It is shown only while `razorpayKeyId` is
+     blank; once Razorpay is on it is hidden (Razorpay takes UPI too).
    - **Send the order, pay after we confirm** — opens WhatsApp (or email) with the
      order written out for the customer to send.
 3. **Order page** (`#/order`) — pay or send. Until a payment goes through there is
    always a **Cancel payment** button, which cancels the order and leaves the cart
    exactly as it was.
 
-## Your bill
+## Payment successful, and your bill
 
-The moment an online payment succeeds, the order page shows an itemised **payment
-receipt** by itself: bill number, date and time, what was bought (quantity, rate,
+The moment an online payment succeeds, the order page changes to **Order confirmed**
+with a green **Payment successful** panel (order number, amount paid, payment ID,
+where it is being delivered, what happens next) and, right under it, an itemised
+**payment receipt**: bill number, date and time, what was bought (quantity, rate,
 amount), subtotal, tax, total paid, the Razorpay payment ID, who it was billed to
 and who sold it. **Print / Save as PDF** gives a clean black-on-white A4 page named
 after the bill number.

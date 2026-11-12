@@ -534,17 +534,17 @@ function markPaid(o, paymentId) {
     fbPush('payments', { order_id: o.id, method: 'razorpay', verified: true, razorpay_payment_id: paymentId || null, amount: o.total, timestamp: new Date().toISOString() });
     syncOrder(o, { payment_method: 'razorpay', razorpay_payment_id: paymentId || null, paid_at: new Date().toISOString() });
     finishCheckout();
-    toast('Payment received — your bill is ready below.');
-    showBill();
+    toast('Payment successful — your order is confirmed.');
+    showConfirmation();
 }
 
-// The bill appears the moment payment succeeds: bring it into view and put
-// keyboard / screen-reader focus on it.
-function showBill() {
+// The moment payment succeeds the page shows "Payment successful" with the bill
+// directly under it: bring that into view and put keyboard / screen-reader focus on it.
+function showConfirmation() {
     requestAnimationFrame(() => {
-        const t = $('#billTitle');
+        const t = $('#successTitle');
         if (!t) return;
-        $('#bill').scrollIntoView({ behavior: 'auto', block: 'start' });
+        $('#paySuccess').scrollIntoView({ behavior: 'auto', block: 'start' });
         t.focus({ preventScroll: true });
     });
 }
@@ -630,14 +630,17 @@ function renderCart() {
 /* ---------- CHECKOUT PAGE ---------- */
 function availableMethods() {
     const m = [];
+    // Razorpay takes UPI too, and tells this page the moment the money arrives.
+    // A plain UPI QR pays your UPI ID directly: the website never hears about it, so it
+    // cannot say "payment successful". It is offered only while Razorpay is switched off.
     if (razorpayOn()) m.push('razorpay');
-    if (upiOn()) m.push('upi');
+    else if (upiOn()) m.push('upi');
     m.push('later');
     return m;
 }
 
 function methodInfo(m) {
-    if (m === 'razorpay') return { title: 'Pay online now', desc: 'UPI, cards, netbanking and wallets — securely through Razorpay.' };
+    if (m === 'razorpay') return { title: 'Pay online now', desc: 'UPI, cards, netbanking and wallets — securely through Razorpay. Your order is confirmed on screen the moment you pay.' };
     if (m === 'upi') return { title: 'Pay by UPI now', desc: 'Scan a QR code or open your UPI app with the exact amount filled in.' };
     return {
         title: WA_NUMBER ? 'Send order on WhatsApp, pay after we confirm' : 'Send order by email, pay after we confirm',
@@ -686,7 +689,7 @@ function updatePlaceButton() {
 /* ---------- ORDER PAGE ---------- */
 function orderCopy(o, st) {
     if (st === 'cancelled') return ['Order cancelled', 'No payment was taken. Your cart is still here if you want to change it and try again.'];
-    if (st === 'paid') return ['Payment received — thank you', `Your order ${o.id} is confirmed and your bill is below. Print or save it now, and we'll message you the delivery details.`];
+    if (st === 'paid') return ['Order confirmed', `Thank you. Your payment of ${money(o.total)} went through and order ${o.id} is confirmed. Your bill is below — print or save it now.`];
     if (st === 'sent') {
         return ['Almost there — press send', `If ${WA_NUMBER ? 'WhatsApp' : 'your email app'} opened, just press send. We reply within a day to confirm stock, delivery and payment.`];
     }
@@ -697,7 +700,20 @@ function orderCopy(o, st) {
 
 function razorpayPanelHTML(o) {
     if (o.paid === 'verified') {
-        return `<section class="panel no-print"><div class="notice ok" style="margin:0"><strong>Payment received</strong>${money(o.total)} paid${o.paymentId ? ' · reference ' + esc(o.paymentId) : ''}.</div></section>`;
+        const c = o.customer;
+        return `<section class="panel success no-print" id="paySuccess" aria-labelledby="successTitle">
+            <span class="success-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+            <div class="success-body">
+                <h2 class="success-title" id="successTitle" tabindex="-1">Payment successful</h2>
+                <p class="success-line">Your order <strong>${esc(o.id)}</strong> is confirmed.</p>
+                <dl class="success-facts">
+                    <div><dt>Amount paid</dt><dd>${money(o.total)}</dd></div>
+                    <div><dt>Payment ID</dt><dd>${esc(o.paymentId || '—')}</dd></div>
+                    <div><dt>Delivering to</dt><dd>${esc(c.name)}, ${esc(c.city)} ${esc(c.pincode)}</dd></div>
+                </dl>
+                <p class="success-next"><strong>What happens next:</strong> we pack your order and contact you on ${esc(c.phone)} about delivery. Your bill is just below.</p>
+            </div>
+        </section>`;
     }
     const busy = isBusy(o);
     const retry = o.payState === 'dismissed' || o.payState === 'failed';
