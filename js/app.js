@@ -474,6 +474,24 @@ function setPayState(o, state, error) {
     if (view === 'order' && currentOrder === o) renderOrder();
 }
 
+// Razorpay accepts at most 15 notes of at most 256 characters each, and refuses the
+// whole payment if one is longer. So each piece of the address gets its own short note.
+function razorpayNotes(o) {
+    const c = o.customer;
+    const clip = v => String(v || '').replace(/\s+/g, ' ').trim().slice(0, 250);
+    const notes = {
+        order_id: o.id,
+        customer: clip(c.name),
+        phone: clip(c.phone),
+        address: clip(c.address),
+        city: clip(`${c.city}, ${c.state} ${c.pincode}`),
+        items: clip(o.items.map(i => `${i.name} x${i.qty}`).join('; ')),
+    };
+    if (c.landmark) notes.landmark = clip(c.landmark);
+    if (c.notes) notes.delivery_notes = clip(c.notes);
+    return notes;
+}
+
 async function startRazorpay() {
     const o = currentOrder;
     if (!o || o.cancelled || o.paid !== 'none' || isBusy(o)) return;
@@ -496,18 +514,16 @@ async function startRazorpay() {
             image: new URL('logo.png', document.baseURI).href,
             prefill: { name: c.name, email: c.email || '', contact: c.phone },
             // Shows in your Razorpay dashboard, so you can see where to ship a paid order.
-            notes: {
-                order_id: o.id,
-                customer: c.name,
-                phone: c.phone,
-                address: `${c.address}, ${c.city}, ${c.state} ${c.pincode}` + (c.landmark ? ` (${c.landmark})` : ''),
-                items: o.items.map(i => `${i.name} x${i.qty}`).join('; ').slice(0, 250),
-            },
+            notes: razorpayNotes(o),
             theme: { color: '#CC5500' },
             handler: response => markPaid(o, response && response.razorpay_payment_id),
             modal: {
                 confirm_close: true,
-                ondismiss: () => { if (o.paid === 'none' && !o.cancelled) setPayState(o, 'dismissed'); },
+                // Closing the window after a declined attempt keeps the reason on screen.
+                ondismiss: () => {
+                    if (o.paid !== 'none' || o.cancelled) return;
+                    if (o.payState === 'failed') setPayState(o, 'failed', o.payError); else setPayState(o, 'dismissed');
+                },
             },
         });
     } catch (e) {
@@ -964,10 +980,11 @@ function renderRecovery() {
     const pend = pendingFromHistory();
     let dismissed = false;
     try { dismissed = Boolean(sessionStorage.getItem('getsuRecoveryDismissed')); } catch (e) { /* ignore */ }
-    // a live order on screen is not "unfinished"
-    const show = Boolean(pend) && !dismissed && view === 'home' && !(currentOrder && currentOrder.id === pend.id);
+    // a live order on screen is not "unfinished". Shown on the cart too: a phone that reloads
+    // the page mid-payment lands the customer there, and they must not be led to pay twice.
+    const show = Boolean(pend) && !dismissed && (view === 'home' || view === 'cart') && !(currentOrder && currentOrder.id === pend.id);
     banner.hidden = !show;
-    if (show) $('#recoveryText').textContent = `You started an order for ${money(pend.total)} but didn't finish it.`;
+    if (show) $('#recoveryText').textContent = `Order ${pend.id} for ${money(pend.total)} isn't finished. Already paid? Don't pay again — email us this order number.`;
 }
 
 function continuePending() {
@@ -1085,7 +1102,8 @@ function openOrders() {
             </div>
             <div class="order-row-items">${o.items.map(i => `${esc(i.name)} × ${i.qty}`).join('<br>')}</div>
             <div class="order-row-total"><span>Total</span><span>${money(o.total)}</span></div>
-            ${o.status === 'pending' ? `<button type="button" class="btn btn-primary btn-block" data-action="finish-order" data-id="${esc(o.id)}">Finish this order</button>` : ''}
+            ${o.status === 'pending' ? `<p class="order-row-note">Already paid for this one? Don't pay again — email this order number to ${esc(CONFIG.businessEmail)} and we'll check.</p>
+            <button type="button" class="btn btn-primary btn-block" data-action="finish-order" data-id="${esc(o.id)}">Finish this order</button>` : ''}
         </div>`).join('');
     openModal('ordersModal');
 }

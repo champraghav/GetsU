@@ -306,7 +306,7 @@
 
                     <div class="field" data-field="name">
                         <label for="ckName">Full name</label>
-                        <input type="text" id="ckName" name="name" autocomplete="name" enterkeyhint="next" required>
+                        <input type="text" id="ckName" name="name" autocomplete="name" maxlength="80" enterkeyhint="next" required>
                         <p class="field-error" id="err-name" hidden></p>
                     </div>
 
@@ -318,21 +318,21 @@
                         </div>
                         <div class="field" data-field="email">
                             <label for="ckEmail">Email <span class="opt">optional</span></label>
-                            <input type="email" id="ckEmail" name="email" autocomplete="email" inputmode="email" autocapitalize="off" placeholder="for your receipt" enterkeyhint="next">
+                            <input type="email" id="ckEmail" name="email" autocomplete="email" inputmode="email" autocapitalize="off" maxlength="120" placeholder="for your receipt" enterkeyhint="next">
                             <p class="field-error" id="err-email" hidden></p>
                         </div>
                     </div>
 
                     <div class="field" data-field="address">
                         <label for="ckAddress">Delivery address</label>
-                        <input type="text" id="ckAddress" name="address" autocomplete="street-address" placeholder="House no., street, area" enterkeyhint="next" required>
+                        <input type="text" id="ckAddress" name="address" autocomplete="street-address" maxlength="200" placeholder="House no., street, area" enterkeyhint="next" required>
                         <p class="field-error" id="err-address" hidden></p>
                     </div>
 
                     <div class="field-row three">
                         <div class="field" data-field="city">
                             <label for="ckCity">City</label>
-                            <input type="text" id="ckCity" name="city" autocomplete="address-level2" enterkeyhint="next" required>
+                            <input type="text" id="ckCity" name="city" autocomplete="address-level2" maxlength="60" enterkeyhint="next" required>
                             <p class="field-error" id="err-city" hidden></p>
                         </div>
                         <div class="field" data-field="state">
@@ -361,11 +361,11 @@
 
                     <div class="field" data-field="landmark">
                         <label for="ckLandmark">Landmark <span class="opt">optional</span></label>
-                        <input type="text" id="ckLandmark" name="landmark" placeholder="Nearby shop, building or turning" enterkeyhint="next">
+                        <input type="text" id="ckLandmark" name="landmark" maxlength="120" placeholder="Nearby shop, building or turning" enterkeyhint="next">
                     </div>
                     <div class="field" data-field="notes">
                         <label for="ckNotes">Delivery notes <span class="opt">optional</span></label>
-                        <input type="text" id="ckNotes" name="notes" placeholder="Best time to deliver, gate code…" enterkeyhint="done">
+                        <input type="text" id="ckNotes" name="notes" maxlength="200" placeholder="Best time to deliver, gate code…" enterkeyhint="done">
                     </div>
 
                     <div class="pay-wrap">
